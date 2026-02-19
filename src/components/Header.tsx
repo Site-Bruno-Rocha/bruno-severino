@@ -95,28 +95,49 @@ const Header = () => {
           </button>
         </div>
 
-        {/* Mobile menu */}
-        {open && (
-          <div className="lg:hidden border-t border-border/30 bg-background/98 backdrop-blur-md">
-            <nav className="max-w-6xl mx-auto px-6 py-4 flex flex-col gap-1" aria-label="Menu mobile">
+        {/* Mobile menu — slide overlay */}
+        <div
+          className={`lg:hidden fixed inset-0 top-0 z-50 transition-all duration-300 ${
+            open ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+          }`}
+        >
+          {/* Backdrop */}
+          <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setOpen(false)} />
+          {/* Panel */}
+          <div
+            className={`absolute right-0 top-0 h-full w-72 bg-card border-l border-border/30 shadow-2xl shadow-black/40 transition-transform duration-300 ${
+              open ? "translate-x-0" : "translate-x-full"
+            }`}
+          >
+            <div className="flex items-center justify-between px-6 h-16 border-b border-border/30">
+              <span className="text-sm font-medium text-foreground">Menu</span>
+              <button
+                onClick={() => setOpen(false)}
+                className="p-2 rounded-md text-muted-foreground hover:text-foreground"
+                aria-label="Fechar menu"
+              >
+                <X size={20} />
+              </button>
+            </div>
+            <nav className="px-6 py-6 flex flex-col gap-1" aria-label="Menu mobile">
               {navLinks.map((link) => (
                 <a
                   key={link.href}
                   href={link.href}
                   onClick={handleNavClick}
-                  className="py-3 text-sm text-muted-foreground hover:text-foreground transition-colors border-b border-border/20 last:border-0"
+                  className="py-3 text-sm text-muted-foreground hover:text-foreground hover:pl-1 transition-all duration-150"
                 >
                   {link.label}
                 </a>
               ))}
-              <div className="pt-3 flex flex-col gap-2">
+              <div className="pt-6">
                 <CTAButton href="#agendar" className="w-full justify-center" onClick={handleNavClick}>
                   Agendar sessão
                 </CTAButton>
               </div>
             </nav>
           </div>
-        )}
+        </div>
       </header>
     </>
   );
