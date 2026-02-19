@@ -118,7 +118,7 @@ const BlogPost = () => {
               Agende uma sessão ou entre em contato.
             </h2>
             <div className="flex flex-wrap justify-center gap-3">
-              <CTAButton to="/agendar" showArrow>
+              <CTAButton href="/#agendar" showArrow>
                 Agendar sessão
               </CTAButton>
               <WhatsAppButton />
