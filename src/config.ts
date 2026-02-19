@@ -13,9 +13,9 @@ export const GOOGLE_APPOINTMENT_EMBED_URL = "";
 export const GOOGLE_APPOINTMENT_DIRECT_URL = "";
 
 // WhatsApp
-export const WHATSAPP_NUMBER = "5500000000000"; // Substitua pelo número real (DDI + DDD + número)
+export const WHATSAPP_NUMBER = "5511953918737";
 export const WHATSAPP_MESSAGE = encodeURIComponent(
-  "Olá, Bruno! Vim pelo seu site e gostaria de agendar um atendimento. Meu nome é ____ e minha disponibilidade é ____."
+  "Olá, Bruno! Vim pelo seu site e gostaria de agendar um atendimento. Meu nome é ____ qual a sua disponibilidade de horário?"
 );
 export const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=${WHATSAPP_MESSAGE}`;
 
