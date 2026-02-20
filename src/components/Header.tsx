@@ -7,6 +7,8 @@ const navLinks = [
   { href: "#sobre", label: "Sobre" },
   { href: "#como-funciona", label: "Como funciona" },
   { href: "#atendimento", label: "Atendimento" },
+  { href: "#avaliacoes", label: "Avaliações" },
+  { href: "#video", label: "Vídeo" },
   { href: "#blog", label: "Blog" },
   { href: "#agendar", label: "Agendar" },
   { href: "#contato", label: "Contato" },
@@ -64,7 +66,7 @@ const Header = () => {
               Bruno Severino Rocha
             </span>
             <span className={`text-muted-foreground font-light transition-all duration-300 ${scrolled ? "text-[10px]" : "text-xs"}`}>
-              Psicólogo · Psicanálise
+              CRP 171992 · Psicólogo · Psicanálise
             </span>
           </a>
 

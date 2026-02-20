@@ -79,4 +79,8 @@
   .text-balance {
     text-wrap: balance;
   }
+
+  .scroll-mt-20 {
+    scroll-margin-top: 5rem;
+  }
 }

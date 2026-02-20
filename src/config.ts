@@ -23,4 +23,7 @@ export const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=${WHATSAPP_ME
 export const EMAIL_PLACEHOLDER = "contato@brunoseverino.com.br"; // Substitua pelo e-mail real
 
 // CRP
-export const CRP = "[INSERIR]"; // Substitua pelo número do CRP
+export const CRP = "171992";
+
+// Vídeo de apresentação (deixar vazio até ter URL)
+export const VIDEO_URL = "";
