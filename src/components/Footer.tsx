@@ -25,6 +25,8 @@ const Footer = () => {
 
           <nav className="flex gap-4 text-xs text-muted-foreground" aria-label="Links do rodapé">
             <a href="#sobre" className="hover:text-foreground transition-colors">Sobre</a>
+            <a href="#avaliacoes" className="hover:text-foreground transition-colors">Avaliações</a>
+            <a href="#video" className="hover:text-foreground transition-colors">Vídeo</a>
             <a href="#blog" className="hover:text-foreground transition-colors">Blog</a>
             <a href="#agendar" className="hover:text-foreground transition-colors">Agendar</a>
           </nav>

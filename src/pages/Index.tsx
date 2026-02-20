@@ -15,52 +15,9 @@ import {
   GraduationCap, Users, BookOpen, Award,
 } from "lucide-react";
 
-/* ── HERO ── */
-const HeroSection = () => (
-  <section id="inicio" className="relative min-h-[92vh] flex items-center pt-28 pb-20 overflow-hidden">
-    {/* Ambient glows */}
-    <div className="absolute top-[15%] left-[10%] w-[500px] h-[500px] bg-primary/8 rounded-full blur-[150px] pointer-events-none" aria-hidden="true" />
-    <div className="absolute bottom-[10%] right-[5%] w-[400px] h-[350px] bg-primary/5 rounded-full blur-[120px] pointer-events-none" aria-hidden="true" />
-    <div className="absolute top-[60%] left-[50%] w-[300px] h-[300px] bg-accent/10 rounded-full blur-[100px] pointer-events-none" aria-hidden="true" />
-
-    {/* Subtle grid pattern */}
-    <div
-      className="absolute inset-0 opacity-[0.03] pointer-events-none"
-      aria-hidden="true"
-      style={{
-        backgroundImage: `linear-gradient(hsl(215 70% 55% / 0.3) 1px, transparent 1px), linear-gradient(90deg, hsl(215 70% 55% / 0.3) 1px, transparent 1px)`,
-        backgroundSize: "80px 80px",
-      }}
-    />
-
-    {/* Decorative line */}
-    <div className="absolute left-6 md:left-12 top-32 bottom-32 w-px bg-gradient-to-b from-transparent via-primary/20 to-transparent pointer-events-none" aria-hidden="true" />
-
-    <div className="max-w-6xl mx-auto px-6 relative">
-      <p className="text-xs uppercase tracking-[0.3em] text-primary font-medium mb-8 flex items-center gap-3">
-        <span className="w-8 h-px bg-primary/60" aria-hidden="true" />
-        Psicologia online · Psicanálise
-      </p>
-      <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground max-w-2xl text-balance mb-6 leading-[1.08]">
-        Psicologia online com{" "}
-        <span className="text-primary">acolhimento</span> e sigilo.
-      </h1>
-      <p className="text-muted-foreground text-lg md:text-xl max-w-lg mb-4 leading-relaxed">
-        Atendimento clínico pela vertente psicanalítica.
-      </p>
-      <p className="text-sm text-muted-foreground/60 mb-12 flex items-center gap-2">
-        <span className="w-1.5 h-1.5 rounded-full bg-primary/60" aria-hidden="true" />
-        Online · Seg–Sáb · Somente com hora marcada
-      </p>
-      <div className="flex flex-wrap gap-3">
-        <CTAButton href="#agendar" size="lg" showArrow>
-          Agendar sessão
-        </CTAButton>
-        <WhatsAppButton size="lg" />
-      </div>
-    </div>
-  </section>
-);
+import HeroSection from "@/components/sections/HeroSection";
+import AvaliacoesSection from "@/components/sections/AvaliacoesSection";
+import VideoSection from "@/components/sections/VideoSection";
 
 /* ── SOBRE ── */
 const stats = [
@@ -71,7 +28,7 @@ const stats = [
 ];
 
 const SobreSection = () => (
-  <section id="sobre" className="py-24">
+  <section id="sobre" className="py-24 scroll-mt-20">
     <div className="max-w-6xl mx-auto px-6">
       <div className="grid md:grid-cols-2 gap-16 items-start">
         <div>
@@ -103,7 +60,7 @@ const SobreSection = () => (
 
 /* ── COMO FUNCIONA ── */
 const ComoFuncionaSection = () => (
-  <section id="como-funciona" className="py-24 bg-card/30">
+  <section id="como-funciona" className="py-24 bg-card/30 scroll-mt-20">
     <div className="max-w-6xl mx-auto px-6">
       <div className="max-w-2xl mx-auto">
         <p className="text-xs uppercase tracking-[0.25em] text-primary font-medium mb-5">Abordagem</p>
@@ -115,7 +72,6 @@ const ComoFuncionaSection = () => (
           <p>É um espaço de acolhimento e reflexão — sem julgamentos, sem respostas prontas, com sigilo rigorosamente respeitado. O processo respeita o seu ritmo e a singularidade da sua história.</p>
         </div>
 
-        {/* Mini FAQ */}
         <Accordion type="single" collapsible className="space-y-2">
           <AccordionItem value="faq-1" className="border border-border/50 rounded-xl px-5 bg-card/50">
             <AccordionTrigger className="text-sm font-medium text-foreground hover:no-underline py-4">
@@ -147,7 +103,7 @@ const beneficios = [
 ];
 
 const AtendimentoSection = () => (
-  <section id="atendimento" className="py-24">
+  <section id="atendimento" className="py-24 scroll-mt-20">
     <div className="max-w-6xl mx-auto px-6">
       <p className="text-xs uppercase tracking-[0.25em] text-primary font-medium mb-5">Atendimento</p>
       <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4 text-balance">
@@ -171,7 +127,7 @@ const AtendimentoSection = () => (
 
 /* ── LAUDOS ── */
 const LaudosSection = () => (
-  <section id="laudos" className="py-16 bg-card/30">
+  <section id="laudos" className="py-16 bg-card/30 scroll-mt-20">
     <div className="max-w-6xl mx-auto px-6">
       <div className="flex items-start gap-5 max-w-2xl">
         <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary shrink-0 mt-1">
@@ -190,7 +146,7 @@ const LaudosSection = () => (
 
 /* ── BLOG PREVIEW ── */
 const BlogPreviewSection = ({ onSelectPost }: { onSelectPost: (post: Post) => void }) => (
-  <section id="blog" className="py-24">
+  <section id="blog" className="py-24 scroll-mt-20">
     <div className="max-w-6xl mx-auto px-6">
       <p className="text-xs uppercase tracking-[0.25em] text-primary font-medium mb-5">Blog</p>
       <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4 text-balance">
@@ -212,7 +168,7 @@ const AgendarSection = () => {
   const hasEmbed = Boolean(GOOGLE_APPOINTMENT_EMBED_URL);
 
   return (
-    <section id="agendar" className="py-24 bg-card/30">
+    <section id="agendar" className="py-24 bg-card/30 scroll-mt-20">
       <div className="max-w-4xl mx-auto px-6">
         <p className="text-xs uppercase tracking-[0.25em] text-primary font-medium mb-5">Agendamento</p>
         <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-3 text-balance">
@@ -259,7 +215,6 @@ const AgendarSection = () => {
           </div>
         )}
 
-        {/* Regras */}
         <div className="flex flex-wrap gap-6 text-sm text-muted-foreground justify-center">
           <span className="flex items-center gap-2"><Monitor size={15} className="text-primary" /> Atendimento 100% online</span>
           <span className="flex items-center gap-2"><Clock size={15} className="text-primary" /> Seg–Sáb, hora marcada</span>
@@ -272,7 +227,7 @@ const AgendarSection = () => {
 
 /* ── CONTATO ── */
 const ContatoSection = () => (
-  <section id="contato" className="py-24">
+  <section id="contato" className="py-24 scroll-mt-20">
     <div className="max-w-6xl mx-auto px-6">
       <div className="max-w-lg">
         <p className="text-xs uppercase tracking-[0.25em] text-primary font-medium mb-5">Contato</p>
@@ -336,6 +291,8 @@ const Index = () => {
         <ComoFuncionaSection />
         <AtendimentoSection />
         <LaudosSection />
+        <AvaliacoesSection />
+        <VideoSection />
         <BlogPreviewSection onSelectPost={setSelectedPost} />
         <AgendarSection />
         <ContatoSection />
