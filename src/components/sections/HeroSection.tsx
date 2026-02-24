@@ -1,6 +1,5 @@
 import CTAButton from "@/components/CTAButton";
 import WhatsAppButton from "@/components/WhatsAppButton";
-import { User } from "lucide-react";
 
 const HeroSection = () => (
   <section id="inicio" className="relative min-h-[92vh] flex items-center pt-28 pb-20 overflow-hidden">
@@ -48,7 +47,7 @@ const HeroSection = () => (
           </div>
         </div>
 
-        {/* Right — image placeholder with blue glow */}
+        {/* Right — photo with blue glow */}
         <div className="relative flex justify-center lg:justify-end">
           {/* Blue glow behind */}
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none" aria-hidden="true">
@@ -56,13 +55,28 @@ const HeroSection = () => (
           </div>
 
           {/* Image container */}
-          <div className="relative w-64 h-80 sm:w-72 sm:h-[22rem] lg:w-80 lg:h-[26rem] rounded-2xl border border-border/50 bg-card/60 backdrop-blur-sm flex flex-col items-center justify-center gap-4 overflow-hidden">
-            <div className="w-16 h-16 rounded-2xl bg-primary/10 flex items-center justify-center text-primary">
-              <User size={32} />
+          <div className="relative w-64 h-80 sm:w-72 sm:h-[22rem] lg:w-80 lg:h-[26rem] rounded-2xl border border-border/50 overflow-hidden shadow-lg shadow-primary/5">
+            {/* Subtle blue overlay */}
+            <div
+              className="absolute inset-0 z-10 pointer-events-none"
+              aria-hidden="true"
+              style={{
+                background: "linear-gradient(160deg, hsl(215 70% 55% / 0.12) 0%, transparent 60%)",
+              }}
+            />
+            <img
+              src="/images/bruno-hero.jpg"
+              alt="Bruno Severino Rocha, psicólogo (psicanálise)"
+              width={320}
+              height={416}
+              className="w-full h-full object-cover object-center"
+              style={{ filter: "contrast(1.06) saturate(0.92)" }}
+              loading="eager"
+            />
+            {/* Fallback handled by border/bg */}
+            <div className="absolute inset-0 -z-10 bg-card flex items-center justify-center text-muted-foreground/30 text-2xl font-bold">
+              BS
             </div>
-            <p className="text-sm text-muted-foreground/60 text-center px-6">
-              Foto do Bruno<br />(em breve)
-            </p>
           </div>
         </div>
       </div>
