@@ -20,10 +20,14 @@ export const WHATSAPP_MESSAGE = encodeURIComponent(
 export const WHATSAPP_URL = `https://wa.me/${WHATSAPP_NUMBER}?text=${WHATSAPP_MESSAGE}`;
 
 // Contato
-export const EMAIL_PLACEHOLDER = "contato@brunoseverino.com.br"; // Substitua pelo e-mail real
+export const EMAIL_PLACEHOLDER = "brunorocha.psicologo@gmail.com";
 
 // CRP
-export const CRP = "171992";
+export const CRP = "06/171992";
+
+// Instagram
+export const INSTAGRAM_HANDLE = "@brunorocha.psi";
+export const INSTAGRAM_URL = "https://instagram.com/brunorocha.psi";
 
 // Vídeo de apresentação (deixar vazio até ter URL)
 export const VIDEO_URL = "";
