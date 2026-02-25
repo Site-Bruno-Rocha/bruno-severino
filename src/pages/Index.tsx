@@ -8,7 +8,7 @@ import BlogCard from "@/components/BlogCard";
 import BlogModal from "@/components/BlogModal";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { EMAIL_PLACEHOLDER, WHATSAPP_URL, GOOGLE_APPOINTMENT_EMBED_URL, GOOGLE_APPOINTMENT_DIRECT_URL, CRP } from "@/config";
+import { EMAIL_PLACEHOLDER, WHATSAPP_URL, GOOGLE_APPOINTMENT_EMBED_URL, GOOGLE_APPOINTMENT_DIRECT_URL, CRP, INSTAGRAM_URL, INSTAGRAM_HANDLE } from "@/config";
 import { posts, type Post } from "@/data/posts";
 import {
   Clock, Home, MapPin, Monitor, ShieldCheck, Mail, MessageCircle, FileText, ExternalLink,
@@ -243,6 +243,10 @@ const ContatoSection = () => (
           <a href={`mailto:${EMAIL_PLACEHOLDER}`} className="flex items-center gap-3 text-sm text-muted-foreground hover:text-foreground transition-colors">
             <Mail size={16} className="text-primary shrink-0" />
             {EMAIL_PLACEHOLDER}
+          </a>
+          <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-sm text-muted-foreground hover:text-foreground transition-colors">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-primary shrink-0"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
+            {INSTAGRAM_HANDLE}
           </a>
           <div className="flex items-center gap-3 text-sm text-muted-foreground">
             <Clock size={16} className="text-primary shrink-0" />

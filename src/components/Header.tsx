@@ -1,7 +1,15 @@
 import { useState, useEffect } from "react";
-import { Menu, X, Mail, Phone, MessageCircle } from "lucide-react";
+import { Menu, X, Mail, MessageCircle } from "lucide-react";
 import CTAButton from "./CTAButton";
-import { EMAIL_PLACEHOLDER, WHATSAPP_URL } from "@/config";
+import { EMAIL_PLACEHOLDER, WHATSAPP_URL, CRP, INSTAGRAM_URL } from "@/config";
+
+const InstagramIcon = ({ size = 12 }: { size?: number }) => (
+  <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
+    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+    <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
+  </svg>
+);
 
 const navLinks = [
   { href: "#sobre", label: "Sobre" },
@@ -38,6 +46,10 @@ const Header = () => {
                 <MessageCircle size={12} />
                 <span className="hidden sm:inline">WhatsApp</span>
               </a>
+              <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 hover:text-foreground transition-colors">
+                <InstagramIcon size={12} />
+                <span className="hidden sm:inline">Instagram</span>
+              </a>
               <a href={`mailto:${EMAIL_PLACEHOLDER}`} className="flex items-center gap-1.5 hover:text-foreground transition-colors">
                 <Mail size={12} />
                 <span className="hidden sm:inline">{EMAIL_PLACEHOLDER}</span>
@@ -59,15 +71,21 @@ const Header = () => {
           {/* Logo */}
           <a
             href="#inicio"
-            className="flex flex-col leading-tight focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded"
-            aria-label="Bruno Severino Rocha — Página inicial"
+            className="flex items-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded"
+            aria-label="Bruno Rocha • Psicólogo (Psicanálise)"
           >
-            <span className={`font-semibold text-foreground tracking-tight transition-all duration-300 ${scrolled ? "text-sm" : "text-base"}`}>
-              Bruno Severino Rocha
-            </span>
-            <span className={`text-muted-foreground font-light transition-all duration-300 ${scrolled ? "text-[10px]" : "text-xs"}`}>
-              CRP 171992 · Psicólogo · Psicanálise
-            </span>
+            {/* Desktop: logo completo */}
+            <img
+              src="/images/logo-bruno-rocha.png"
+              alt="Bruno Rocha • Psicólogo (Psicanálise)"
+              className={`hidden lg:block transition-all duration-300 ${scrolled ? "h-7" : "h-8"}`}
+            />
+            {/* Mobile: monograma */}
+            <img
+              src="/images/logo-br.png"
+              alt="Bruno Rocha • Psicólogo (Psicanálise)"
+              className={`lg:hidden transition-all duration-300 ${scrolled ? "h-6" : "h-7"}`}
+            />
           </a>
 
           {/* Desktop nav */}
