@@ -9,7 +9,8 @@ import BlogModal from "@/components/BlogModal";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { EMAIL_PLACEHOLDER, WHATSAPP_URL, GOOGLE_APPOINTMENT_EMBED_URL, GOOGLE_APPOINTMENT_DIRECT_URL, CRP, INSTAGRAM_URL, INSTAGRAM_HANDLE } from "@/config";
-import { posts, type Post } from "@/data/posts";
+import { posts as staticPosts, type Post } from "@/data/posts";
+import { fetchPublishedPosts, type DbPost } from "@/hooks/usePosts";
 import {
   Clock, Home, MapPin, Monitor, ShieldCheck, Mail, MessageCircle, FileText, ExternalLink,
   GraduationCap, Users, BookOpen, Award,
@@ -144,23 +145,51 @@ const LaudosSection = () => (
   </section>
 );
 
+/* ── helpers ── */
+function dbPostToPost(db: DbPost): Post {
+  return {
+    slug: db.slug,
+    title: db.title,
+    date: db.created_at.slice(0, 10),
+    excerpt: db.excerpt,
+    category: db.category,
+    content: db.content,
+  };
+}
+
 /* ── BLOG PREVIEW ── */
-const BlogPreviewSection = ({ onSelectPost }: { onSelectPost: (post: Post) => void }) => (
-  <section id="blog" className="py-24 scroll-mt-20">
-    <div className="max-w-6xl mx-auto px-6">
-      <p className="text-xs uppercase tracking-[0.25em] text-primary font-medium mb-5">Blog</p>
-      <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4 text-balance">
-        Reflexões sobre saúde mental
-      </h2>
-      <p className="text-muted-foreground mb-12 max-w-lg">Textos curtos sobre psicanálise, emoções e autoconhecimento.</p>
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-        {posts.slice(0, 3).map((post) => (
-          <BlogCard key={post.slug} post={post} onClick={() => onSelectPost(post)} />
-        ))}
+const BlogPreviewSection = ({ onSelectPost }: { onSelectPost: (post: Post) => void }) => {
+  const [displayPosts, setDisplayPosts] = useState<Post[]>(staticPosts.slice(0, 3));
+
+  useEffect(() => {
+    fetchPublishedPosts()
+      .then((dbPosts) => {
+        if (dbPosts.length > 0) {
+          setDisplayPosts(dbPosts.slice(0, 3).map(dbPostToPost));
+        }
+      })
+      .catch(() => {
+        // Fallback: keep static posts
+      });
+  }, []);
+
+  return (
+    <section id="blog" className="py-24 scroll-mt-20">
+      <div className="max-w-6xl mx-auto px-6">
+        <p className="text-xs uppercase tracking-[0.25em] text-primary font-medium mb-5">Blog</p>
+        <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4 text-balance">
+          Reflexões sobre saúde mental
+        </h2>
+        <p className="text-muted-foreground mb-12 max-w-lg">Textos curtos sobre psicanálise, emoções e autoconhecimento.</p>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+          {displayPosts.map((post) => (
+            <BlogCard key={post.slug} post={post} onClick={() => onSelectPost(post)} />
+          ))}
+        </div>
       </div>
-    </div>
-  </section>
-);
+    </section>
+  );
+};
 
 /* ── AGENDAR ── */
 const AgendarSection = () => {

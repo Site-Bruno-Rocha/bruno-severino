@@ -32,6 +32,12 @@ const Header = () => {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // Lock body scroll when menu is open
+  useEffect(() => {
+    document.body.style.overflow = open ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
+  }, [open]);
+
   const handleNavClick = () => setOpen(false);
 
   return (
@@ -63,29 +69,33 @@ const Header = () => {
       <header
         className={`fixed left-0 right-0 z-40 transition-all duration-300 border-b border-border/30 ${
           scrolled
-            ? "top-0 bg-background/90 backdrop-blur-md h-14"
-            : "top-8 bg-background/70 backdrop-blur-sm h-16"
+            ? "top-0 bg-background/90 backdrop-blur-md h-16"
+            : "top-8 bg-background/70 backdrop-blur-sm h-[4.5rem]"
         }`}
       >
         <div className="max-w-6xl mx-auto px-6 h-full flex items-center justify-between">
-          {/* Logo */}
+          {/* Logo + CRP */}
           <a
             href="#inicio"
-            className="flex items-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded"
+            className="flex items-center gap-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded shrink-0"
             aria-label="Bruno Rocha • Psicólogo (Psicanálise)"
           >
             {/* Desktop: logo completo */}
             <img
               src="/images/logo-bruno-rocha.png"
               alt="Bruno Rocha • Psicólogo (Psicanálise)"
-              className={`hidden lg:block transition-all duration-300 ${scrolled ? "h-7" : "h-8"}`}
+              className={`hidden lg:block transition-all duration-300 ${scrolled ? "h-9" : "h-11"}`}
             />
             {/* Mobile: monograma */}
             <img
               src="/images/logo-br.png"
-              alt="Bruno Rocha • Psicólogo (Psicanálise)"
-              className={`lg:hidden transition-all duration-300 ${scrolled ? "h-6" : "h-7"}`}
+              alt="Bruno Rocha"
+              className={`lg:hidden transition-all duration-300 ${scrolled ? "h-8" : "h-9"}`}
             />
+            {/* CRP — desktop inline, mobile abaixo */}
+            <span className="hidden lg:inline text-[11px] text-muted-foreground/70 font-medium tracking-wide">
+              CRP {CRP}
+            </span>
           </a>
 
           {/* Desktop nav */}
@@ -104,15 +114,20 @@ const Header = () => {
             </CTAButton>
           </nav>
 
-          {/* Mobile toggle */}
-          <button
-            className="lg:hidden p-2 rounded-md text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-            onClick={() => setOpen(!open)}
-            aria-label={open ? "Fechar menu" : "Abrir menu"}
-            aria-expanded={open}
-          >
-            {open ? <X size={20} /> : <Menu size={20} />}
-          </button>
+          {/* Mobile: CRP + hamburger */}
+          <div className="flex lg:hidden items-center gap-3">
+            <span className="text-[10px] text-muted-foreground/60 font-medium tracking-wide hidden xs:inline">
+              CRP {CRP}
+            </span>
+            <button
+              className="p-2.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-accent/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring transition-colors"
+              onClick={() => setOpen(!open)}
+              aria-label={open ? "Fechar menu" : "Abrir menu"}
+              aria-expanded={open}
+            >
+              {open ? <X size={22} /> : <Menu size={22} />}
+            </button>
+          </div>
         </div>
 
         {/* Mobile menu — slide overlay */}
@@ -130,10 +145,13 @@ const Header = () => {
             }`}
           >
             <div className="flex items-center justify-between px-6 h-16 border-b border-border/30">
-              <span className="text-sm font-medium text-foreground">Menu</span>
+              <div className="flex items-center gap-2">
+                <img src="/images/logo-br.png" alt="BR" className="h-6" />
+                <span className="text-xs text-muted-foreground/60 font-medium">CRP {CRP}</span>
+              </div>
               <button
                 onClick={() => setOpen(false)}
-                className="p-2 rounded-md text-muted-foreground hover:text-foreground"
+                className="p-2.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-accent/50 transition-colors"
                 aria-label="Fechar menu"
               >
                 <X size={20} />
@@ -145,7 +163,7 @@ const Header = () => {
                   key={link.href}
                   href={link.href}
                   onClick={handleNavClick}
-                  className="py-3 text-sm text-muted-foreground hover:text-foreground hover:pl-1 transition-all duration-150"
+                  className="py-3 text-sm text-muted-foreground hover:text-foreground hover:pl-1 transition-all duration-150 min-h-[44px] flex items-center"
                 >
                   {link.label}
                 </a>
