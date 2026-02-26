@@ -1,185 +1,83 @@
 
 
-## Plano: Logo branco, Favicon, CRP, Mobile UX e Admin do Blog
+## Plano: Logo maior, Favicon, Menu escuro, Hero mobile e Credito
 
 ### Resumo
-
-Atualizar os logos para versao branca, corrigir favicon, melhorar UX mobile e implementar sistema de admin para o blog com Supabase.
-
----
-
-### Etapa 0 -- Conectar Supabase
-
-O projeto ainda nao tem Supabase. Sera necessario conectar o Supabase ao projeto para:
-- Autenticacao (login do Bruno)
-- Tabela de posts do blog (CRUD)
-- Tabela de roles (seguranca admin)
-
-**Acao:** Usar o conector do Supabase para vincular ao projeto.
+Substituir logos por versoes maiores, corrigir favicon, escurecer menu mobile, reordenar Hero no mobile e adicionar credito no footer.
 
 ---
 
-### Etapa 1 -- Assets e Favicon
+### 1. Assets -- Copiar logos maiores
 
-| Arquivo origem | Destino |
-|---|---|
-| `Logo_-_Bruno_Rocha_Branco_-_s_fundo.png` | `public/images/logo-bruno-rocha.png` (substitui o azul) |
-| `Logo_-_BR_Branco_-_s_fundo.png` | `public/images/logo-br.png` (substitui o azul) |
-| `Logo_-_BR_Branco_-_s_fundo.png` | `public/favicon.png` |
+- Copiar `Logo_-_Bruno_Rocha_Branco_-_s_fundo_Grande.png` para `public/images/logo-bruno-rocha.png` (substitui o atual)
+- Copiar `Logo_-_BR_Branco_-_s_fundo_Grande.png` para `public/images/logo-br.png` (substitui o atual)
+- Copiar `Logo_-_BR_Branco_-_s_fundo_Grande.png` para `public/favicon.png` (substitui o atual)
 
 O `index.html` ja aponta para `/favicon.png`, entao basta substituir o arquivo.
 
 ---
 
-### Etapa 2 -- Header (logo maior + CRP + mobile)
+### 2. Header -- Logo maior (`src/components/Header.tsx`)
 
-**Arquivo:** `src/components/Header.tsx`
+Aumentar as classes de altura do logo:
 
-- Aumentar tamanho do logo: desktop `h-9` (36px), mobile `h-8` (32px)
-- Manter CRP ao lado do logo no desktop: texto discreto "CRP 06/171992"
-- No mobile: CRP abaixo do monograma em texto menor
-
-**Menu mobile:**
-- O header ja tem um menu lateral (drawer) funcional com overlay, fechar ao clicar, etc.
-- Ajustes: garantir hit area minima de 44px nos itens (`py-3` ja presente), manter hamburger icon (ja usa `Menu`/`X` do lucide)
-- Sem mudancas estruturais grandes necessarias -- o menu mobile ja esta bem implementado
+- **Desktop** (logo completo): de `h-9`/`h-11` para `h-12`/`h-14` (~48-56px)
+- **Mobile** (monograma): de `h-8`/`h-9` para `h-9`/`h-10` (~36-40px)
+- Aumentar altura do header para acomodar: de `h-16`/`h-[4.5rem]` para `h-18`/`h-20` (ou equivalente com valores arbitrarios)
+- Manter CRP ao lado do logo no desktop e visivel no mobile
 
 ---
 
-### Etapa 3 -- Footer
+### 3. Menu mobile mais escuro (`src/components/Header.tsx`)
 
-**Arquivo:** `src/components/Footer.tsx`
+Ajustar o painel do drawer mobile:
 
-- Substituir logo azul pelo branco (mesmo path, arquivo substituido)
-- Adicionar link discreto "Admin" no footer: `<a href="/admin">Admin</a>`
+- **Painel**: de `bg-card` para `bg-[hsl(220,28%,6%)]` (quase preto) com borda mais visivel
+- **Backdrop**: de `bg-black/60` para `bg-black/70`
+- **Itens do menu**: texto `text-foreground/90` em vez de `text-muted-foreground`, hover com `bg-primary/10`
+- **Header do painel**: fundo ligeiramente diferenciado com borda mais forte
+- Manter acessibilidade (foco visivel, fechar ao clicar fora, ESC via backdrop click)
 
 ---
 
-### Etapa 4 -- Banco de dados (Supabase)
+### 4. Hero -- Reordenar no mobile (`src/components/sections/HeroSection.tsx`)
 
-**Migracoes:**
+Reestruturar o layout para que no mobile a ordem seja: textos, foto, botoes.
 
-1. Criar tipo `app_role` e tabela `user_roles`:
+- Separar os botoes do bloco de texto em um elemento proprio
+- No mobile (abaixo de `lg:`):
+  - Textos (titulo, subtitulo, info) aparecem primeiro
+  - Foto do Bruno aparece em seguida
+  - Botoes "Agendar sessao" e "Falar no WhatsApp" ficam abaixo da foto
+- No desktop (`lg:` e acima): manter layout de 2 colunas (texto+botoes a esquerda, foto a direita)
+- Usar CSS `order` nos breakpoints para controlar a sequencia
+- Botoes no mobile: empilhados em coluna, largura confortavel (`w-full` ou `max-w-xs`)
 
-```sql
-create type public.app_role as enum ('admin', 'user');
+---
 
-create table public.user_roles (
-  id uuid primary key default gen_random_uuid(),
-  user_id uuid references auth.users(id) on delete cascade not null,
-  role app_role not null,
-  unique (user_id, role)
-);
+### 5. Credito no footer (`src/components/Footer.tsx`)
 
-alter table public.user_roles enable row level security;
+Adicionar linha abaixo do copyright existente:
+
+```
+Criado por Next Corporation
 ```
 
-2. Criar funcao `has_role` (security definer):
-
-```sql
-create or replace function public.has_role(_user_id uuid, _role app_role)
-returns boolean language sql stable security definer
-set search_path = public
-as $$
-  select exists (
-    select 1 from public.user_roles
-    where user_id = _user_id and role = _role
-  )
-$$;
-```
-
-3. Criar tabela `posts`:
-
-```sql
-create table public.posts (
-  id uuid primary key default gen_random_uuid(),
-  title text not null,
-  slug text unique not null,
-  excerpt text not null default '',
-  content text not null default '',
-  category text not null default 'Geral',
-  status text not null default 'draft' check (status in ('draft', 'published')),
-  author_id uuid references auth.users(id) on delete set null,
-  created_at timestamptz default now(),
-  updated_at timestamptz default now()
-);
-
-alter table public.posts enable row level security;
-```
-
-4. RLS policies para `posts`:
-- SELECT publico: apenas `status = 'published'`
-- SELECT admin: todos (usando `has_role`)
-- INSERT/UPDATE/DELETE: apenas admin
-
-5. RLS para `user_roles`:
-- SELECT: usuario pode ver suas proprias roles
-- Sem INSERT/UPDATE/DELETE publico
-
-6. Inserir role admin para o Bruno (apos ele criar conta): via INSERT na tabela `user_roles`
+- Estilo: `text-xs text-muted-foreground/40` (discreto, nao compete com o conteudo)
+- Sem link (nenhuma URL foi fornecida)
 
 ---
 
-### Etapa 5 -- Integracao Supabase no Frontend
+### Arquivos modificados
 
-**Novos arquivos:**
-- `src/integrations/supabase/client.ts` -- cliente Supabase (gerado automaticamente ao conectar)
-- `src/hooks/useAuth.ts` -- hook de autenticacao
-- `src/hooks/usePosts.ts` -- hook CRUD de posts
-
----
-
-### Etapa 6 -- Rotas Admin (privadas)
-
-**Arquivo:** `src/App.tsx` -- adicionar rotas:
-
-```text
-/admin          -> redirect para /admin/posts
-/admin/login    -> pagina de login
-/admin/posts    -> lista de posts (protegida)
-/admin/posts/new -> criar post (protegida)
-/admin/posts/:id -> editar post (protegida)
-```
-
-**Novos arquivos de pagina:**
-- `src/pages/admin/Login.tsx` -- formulario email+senha
-- `src/pages/admin/Posts.tsx` -- lista de posts com acoes (editar/excluir/publicar)
-- `src/pages/admin/PostEditor.tsx` -- formulario criar/editar post
-- `src/components/admin/ProtectedRoute.tsx` -- wrapper que verifica auth + role admin
-
-**Funcionalidades do editor:**
-- Campos: titulo, slug (auto-gerado), resumo, conteudo (textarea), categoria, status (rascunho/publicado)
-- Salvar rascunho e publicar
-- Excluir post com confirmacao
-
----
-
-### Etapa 7 -- Blog publico com dados do Supabase
-
-**Arquivo:** `src/pages/Index.tsx`
-
-- A secao `BlogPreviewSection` passara a buscar posts publicados do Supabase (em vez do array estatico `posts` de `src/data/posts.ts`)
-- Manter o `BlogModal` para leitura inline
-- Fallback: se Supabase nao retornar dados, mostrar os posts estaticos como backup
-
----
-
-### Arquivos modificados/criados
-
-| Arquivo | Acao |
+| Arquivo | Mudanca |
 |---|---|
-| `public/images/logo-bruno-rocha.png` | Substituido (branco) |
-| `public/images/logo-br.png` | Substituido (branco) |
-| `public/favicon.png` | Substituido (monograma branco) |
-| `src/components/Header.tsx` | Logo maior, CRP ajustado |
-| `src/components/Footer.tsx` | Link "Admin" discreto |
-| `src/App.tsx` | Rotas admin |
-| `src/hooks/useAuth.ts` | Novo |
-| `src/hooks/usePosts.ts` | Novo |
-| `src/pages/admin/Login.tsx` | Novo |
-| `src/pages/admin/Posts.tsx` | Novo |
-| `src/pages/admin/PostEditor.tsx` | Novo |
-| `src/components/admin/ProtectedRoute.tsx` | Novo |
-| `src/pages/Index.tsx` | Blog busca do Supabase |
-| Migracoes SQL (4-5) | Novas |
+| `public/images/logo-bruno-rocha.png` | Substituido (versao maior) |
+| `public/images/logo-br.png` | Substituido (versao maior) |
+| `public/favicon.png` | Substituido (monograma maior) |
+| `src/components/Header.tsx` | Logo maior, menu mobile mais escuro |
+| `src/components/sections/HeroSection.tsx` | Reordenar: foto acima dos botoes no mobile |
+| `src/components/Footer.tsx` | Adicionar "Criado por Next Corporation" |
+
+Nenhuma rota nova sera criada. O site permanece one-page.
 
