@@ -21,9 +21,9 @@ const HeroSection = () => (
     <div className="absolute left-6 md:left-12 top-32 bottom-32 w-px bg-gradient-to-b from-transparent via-primary/20 to-transparent pointer-events-none" aria-hidden="true" />
 
     <div className="max-w-6xl mx-auto px-6 w-full relative">
-      <div className="grid lg:grid-cols-[1.15fr_0.85fr] gap-12 lg:gap-20 items-center">
-        {/* Left — text */}
-        <div>
+      <div className="flex flex-col lg:grid lg:grid-cols-[1.15fr_0.85fr] gap-12 lg:gap-20 items-center">
+        {/* Text block */}
+        <div className="order-1">
           <p className="text-xs uppercase tracking-[0.3em] text-primary font-medium mb-8 flex items-center gap-3">
             <span className="w-8 h-px bg-primary/60" aria-hidden="true" />
             Psicologia online · Psicanálise
@@ -35,11 +35,12 @@ const HeroSection = () => (
           <p className="text-muted-foreground text-lg md:text-xl max-w-lg mb-4 leading-relaxed">
             Atendimento clínico pela vertente psicanalítica.
           </p>
-          <p className="text-sm text-muted-foreground/60 mb-12 flex items-center gap-2">
+          <p className="text-sm text-muted-foreground/60 mb-8 lg:mb-12 flex items-center gap-2">
             <span className="w-1.5 h-1.5 rounded-full bg-primary/60" aria-hidden="true" />
             Online · Seg–Sáb · Somente com hora marcada
           </p>
-          <div className="flex flex-wrap gap-3">
+          {/* Desktop buttons — inline with text */}
+          <div className="hidden lg:flex flex-wrap gap-3">
             <CTAButton href="#agendar" size="lg" showArrow>
               Agendar sessão
             </CTAButton>
@@ -47,16 +48,12 @@ const HeroSection = () => (
           </div>
         </div>
 
-        {/* Right — photo with blue glow */}
-        <div className="relative flex justify-center lg:justify-end">
-          {/* Blue glow behind */}
+        {/* Photo */}
+        <div className="relative flex justify-center lg:justify-end order-2">
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none" aria-hidden="true">
             <div className="w-[85%] h-[85%] bg-primary/15 rounded-full blur-[80px]" />
           </div>
-
-          {/* Image container */}
           <div className="relative w-64 h-80 sm:w-72 sm:h-[22rem] lg:w-80 lg:h-[26rem] rounded-2xl border border-border/50 overflow-hidden shadow-lg shadow-primary/5">
-            {/* Subtle blue overlay */}
             <div
               className="absolute inset-0 z-10 pointer-events-none"
               aria-hidden="true"
@@ -73,11 +70,18 @@ const HeroSection = () => (
               style={{ filter: "contrast(1.06) saturate(0.92)" }}
               loading="eager"
             />
-            {/* Fallback handled by border/bg */}
             <div className="absolute inset-0 -z-10 bg-card flex items-center justify-center text-muted-foreground/30 text-2xl font-bold">
               BS
             </div>
           </div>
+        </div>
+
+        {/* Mobile buttons — below photo */}
+        <div className="flex lg:hidden flex-col items-center gap-3 w-full max-w-xs mx-auto order-3">
+          <CTAButton href="#agendar" size="lg" showArrow className="w-full justify-center">
+            Agendar sessão
+          </CTAButton>
+          <WhatsAppButton size="lg" className="w-full justify-center" />
         </div>
       </div>
     </div>

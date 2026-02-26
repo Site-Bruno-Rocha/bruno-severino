@@ -69,8 +69,8 @@ const Header = () => {
       <header
         className={`fixed left-0 right-0 z-40 transition-all duration-300 border-b border-border/30 ${
           scrolled
-            ? "top-0 bg-background/90 backdrop-blur-md h-16"
-            : "top-8 bg-background/70 backdrop-blur-sm h-[4.5rem]"
+            ? "top-0 bg-background/90 backdrop-blur-md h-[4.5rem]"
+            : "top-8 bg-background/70 backdrop-blur-sm h-20"
         }`}
       >
         <div className="max-w-6xl mx-auto px-6 h-full flex items-center justify-between">
@@ -84,13 +84,13 @@ const Header = () => {
             <img
               src="/images/logo-bruno-rocha.png"
               alt="Bruno Rocha • Psicólogo (Psicanálise)"
-              className={`hidden lg:block transition-all duration-300 ${scrolled ? "h-9" : "h-11"}`}
+              className={`hidden lg:block transition-all duration-300 ${scrolled ? "h-12" : "h-14"}`}
             />
             {/* Mobile: monograma */}
             <img
               src="/images/logo-br.png"
               alt="Bruno Rocha"
-              className={`lg:hidden transition-all duration-300 ${scrolled ? "h-8" : "h-9"}`}
+              className={`lg:hidden transition-all duration-300 ${scrolled ? "h-9" : "h-10"}`}
             />
             {/* CRP — desktop inline, mobile abaixo */}
             <span className="hidden lg:inline text-[11px] text-muted-foreground/70 font-medium tracking-wide">
@@ -137,14 +137,14 @@ const Header = () => {
           }`}
         >
           {/* Backdrop */}
-          <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" onClick={() => setOpen(false)} />
+          <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={() => setOpen(false)} />
           {/* Panel */}
           <div
-            className={`absolute right-0 top-0 h-full w-72 bg-card border-l border-border/30 shadow-2xl shadow-black/40 transition-transform duration-300 ${
+            className={`absolute right-0 top-0 h-full w-72 bg-[hsl(220,28%,6%)] border-l border-border/50 shadow-2xl shadow-black/60 transition-transform duration-300 ${
               open ? "translate-x-0" : "translate-x-full"
             }`}
           >
-            <div className="flex items-center justify-between px-6 h-16 border-b border-border/30">
+            <div className="flex items-center justify-between px-6 h-16 border-b border-border/50 bg-white/[0.02]">
               <div className="flex items-center gap-2">
                 <img src="/images/logo-br.png" alt="BR" className="h-6" />
                 <span className="text-xs text-muted-foreground/60 font-medium">CRP {CRP}</span>
@@ -163,7 +163,7 @@ const Header = () => {
                   key={link.href}
                   href={link.href}
                   onClick={handleNavClick}
-                  className="py-3 text-sm text-muted-foreground hover:text-foreground hover:pl-1 transition-all duration-150 min-h-[44px] flex items-center"
+                  className="py-3 text-sm text-foreground/90 hover:text-foreground hover:bg-primary/10 hover:pl-1 rounded-md px-2 transition-all duration-150 min-h-[44px] flex items-center"
                 >
                   {link.label}
                 </a>

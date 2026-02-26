@@ -52,6 +52,9 @@ const Footer = () => {
         <p className="text-xs text-muted-foreground/50 mt-8 text-center">
           © {year} Bruno Severino Rocha — Todos os direitos reservados.
         </p>
+        <p className="text-xs text-muted-foreground/40 mt-2 text-center">
+          Criado por Next Corporation
+        </p>
       </div>
     </footer>
   );
