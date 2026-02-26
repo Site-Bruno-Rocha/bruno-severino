@@ -80,19 +80,13 @@ const Header = () => {
             className="flex items-center gap-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded shrink-0"
             aria-label="Bruno Rocha • Psicólogo (Psicanálise)"
           >
-            {/* Desktop: logo completo */}
+          {/* Logo completo em todos os breakpoints */}
             <img
               src="/images/logo-bruno-rocha.png"
               alt="Bruno Rocha • Psicólogo (Psicanálise)"
-              className={`hidden lg:block transition-all duration-300 ${scrolled ? "h-14" : "h-16"}`}
+              className={`transition-all duration-300 flex-shrink-0 ${scrolled ? "h-9 lg:h-14" : "h-10 lg:h-16"}`}
             />
-            {/* Mobile: monograma */}
-            <img
-              src="/images/logo-br.png"
-              alt="Bruno Rocha"
-              className={`lg:hidden transition-all duration-300 ${scrolled ? "h-10" : "h-12"}`}
-            />
-            {/* CRP — desktop inline, mobile abaixo */}
+            {/* CRP — desktop inline */}
             <span className="hidden lg:inline text-[11px] text-muted-foreground/70 font-medium tracking-wide">
               CRP {CRP}
             </span>
@@ -115,10 +109,7 @@ const Header = () => {
           </nav>
 
           {/* Mobile: CRP + hamburger */}
-          <div className="flex lg:hidden items-center gap-3">
-            <span className="text-[10px] text-muted-foreground/60 font-medium tracking-wide hidden xs:inline">
-              CRP {CRP}
-            </span>
+          <div className="flex lg:hidden items-center gap-2">
             <button
               className="p-2.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-accent/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring transition-colors"
               onClick={() => setOpen(!open)}
@@ -140,14 +131,14 @@ const Header = () => {
           <div className="absolute inset-0 bg-black/75 backdrop-blur-sm" onClick={() => setOpen(false)} />
           {/* Panel */}
           <div
-            className={`absolute right-0 top-0 h-full w-72 bg-[hsl(220,30%,8%)] border-l border-primary/20 shadow-2xl shadow-black/80 transition-transform duration-300 ${
+            className={`absolute right-0 top-0 h-full w-[280px] bg-[hsl(220,28%,7%)] border-l border-primary/15 shadow-2xl shadow-black/80 transition-transform duration-300 ${
               open ? "translate-x-0" : "translate-x-full"
             }`}
           >
-            <div className="flex items-center justify-between px-6 h-16 border-b border-primary/15 bg-primary/5">
+            <div className="flex items-center justify-between px-5 h-16 border-b border-primary/10 bg-primary/[0.04]">
               <div className="flex items-center gap-2">
-                <img src="/images/logo-br.png" alt="BR" className="h-6" />
-                <span className="text-xs text-muted-foreground/60 font-medium">CRP {CRP}</span>
+                <img src="/images/logo-br.png" alt="BR" className="h-7" />
+                <span className="text-[10px] text-muted-foreground/50 font-medium tracking-wide">CRP {CRP}</span>
               </div>
               <button
                 onClick={() => setOpen(false)}
@@ -157,18 +148,18 @@ const Header = () => {
                 <X size={20} />
               </button>
             </div>
-            <nav className="px-6 py-6 flex flex-col gap-1" aria-label="Menu mobile">
+            <nav className="px-4 py-5 flex flex-col gap-0.5 overflow-y-auto" aria-label="Menu mobile">
               {navLinks.map((link) => (
                 <a
                   key={link.href}
                   href={link.href}
                   onClick={handleNavClick}
-                  className="py-3 text-sm text-foreground/90 hover:text-foreground hover:bg-primary/15 hover:pl-1 rounded-md px-2 transition-all duration-150 min-h-[44px] flex items-center border-b border-border/10 last:border-b-0"
+                  className="py-3 px-3 text-[15px] text-foreground/90 hover:text-foreground hover:bg-primary/10 rounded-lg transition-all duration-150 min-h-[44px] flex items-center border-b border-white/[0.04] last:border-b-0"
                 >
                   {link.label}
                 </a>
               ))}
-              <div className="pt-6">
+              <div className="pt-5">
                 <CTAButton href="#agendar" className="w-full justify-center" onClick={handleNavClick}>
                   Agendar sessão
                 </CTAButton>

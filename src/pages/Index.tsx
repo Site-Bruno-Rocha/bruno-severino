@@ -29,9 +29,9 @@ const stats = [
 ];
 
 const SobreSection = () => (
-  <section id="sobre" className="py-24 scroll-mt-20">
-    <div className="max-w-6xl mx-auto px-6">
-      <div className="grid md:grid-cols-2 gap-16 items-start">
+<section id="sobre" className="py-14 lg:py-24">
+    <div className="max-w-6xl mx-auto px-5 sm:px-6">
+      <div className="grid md:grid-cols-2 gap-10 lg:gap-16 items-start">
         <div>
           <p className="text-xs uppercase tracking-[0.25em] text-primary font-medium mb-5">Sobre</p>
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-6 text-balance">
@@ -61,8 +61,8 @@ const SobreSection = () => (
 
 /* ── COMO FUNCIONA ── */
 const ComoFuncionaSection = () => (
-  <section id="como-funciona" className="py-24 bg-card/30 scroll-mt-20">
-    <div className="max-w-6xl mx-auto px-6">
+<section id="como-funciona" className="py-14 lg:py-24 bg-card/30">
+    <div className="max-w-6xl mx-auto px-5 sm:px-6">
       <div className="max-w-2xl mx-auto">
         <p className="text-xs uppercase tracking-[0.25em] text-primary font-medium mb-5">Abordagem</p>
         <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-6 text-balance">
@@ -104,14 +104,14 @@ const beneficios = [
 ];
 
 const AtendimentoSection = () => (
-  <section id="atendimento" className="py-24 scroll-mt-20">
-    <div className="max-w-6xl mx-auto px-6">
+<section id="atendimento" className="py-14 lg:py-24">
+    <div className="max-w-6xl mx-auto px-5 sm:px-6">
       <p className="text-xs uppercase tracking-[0.25em] text-primary font-medium mb-5">Atendimento</p>
-      <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4 text-balance">
+      <h2 className="text-2xl md:text-4xl font-bold text-foreground mb-4 text-balance">
         Atendimento online, presença real.
       </h2>
-      <p className="text-muted-foreground mb-12 max-w-lg">Online · Seg–Sáb · Somente com hora marcada</p>
-      <div className="grid sm:grid-cols-3 gap-5">
+      <p className="text-muted-foreground mb-8 lg:mb-12 max-w-lg">Online · Seg–Sáb · Somente com hora marcada</p>
+      <div className="grid sm:grid-cols-3 gap-4 sm:gap-5">
         {beneficios.map((b) => (
           <div key={b.title} className="rounded-2xl border border-border/50 bg-card/50 p-6 hover:bg-card transition-colors duration-200">
             <div className="mb-4 w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary">
@@ -128,8 +128,8 @@ const AtendimentoSection = () => (
 
 /* ── LAUDOS ── */
 const LaudosSection = () => (
-  <section id="laudos" className="py-16 bg-card/30 scroll-mt-20">
-    <div className="max-w-6xl mx-auto px-6">
+<section id="laudos" className="py-10 lg:py-16 bg-card/30">
+    <div className="max-w-6xl mx-auto px-5 sm:px-6">
       <div className="flex items-start gap-5 max-w-2xl">
         <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary shrink-0 mt-1">
           <FileText size={20} />
@@ -174,14 +174,14 @@ const BlogPreviewSection = ({ onSelectPost }: { onSelectPost: (post: Post) => vo
   }, []);
 
   return (
-    <section id="blog" className="py-24 scroll-mt-20">
-      <div className="max-w-6xl mx-auto px-6">
+    <section id="blog" className="py-14 lg:py-24">
+      <div className="max-w-6xl mx-auto px-5 sm:px-6">
         <p className="text-xs uppercase tracking-[0.25em] text-primary font-medium mb-5">Blog</p>
-        <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4 text-balance">
+        <h2 className="text-2xl md:text-4xl font-bold text-foreground mb-4 text-balance">
           Reflexões sobre saúde mental
         </h2>
-        <p className="text-muted-foreground mb-12 max-w-lg">Textos curtos sobre psicanálise, emoções e autoconhecimento.</p>
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        <p className="text-muted-foreground mb-8 lg:mb-12 max-w-lg">Textos curtos sobre psicanálise, emoções e autoconhecimento.</p>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
           {displayPosts.map((post) => (
             <BlogCard key={post.slug} post={post} onClick={() => onSelectPost(post)} />
           ))}
@@ -197,10 +197,10 @@ const AgendarSection = () => {
   const hasEmbed = Boolean(GOOGLE_APPOINTMENT_EMBED_URL);
 
   return (
-    <section id="agendar" className="py-24 bg-card/30 scroll-mt-20">
-      <div className="max-w-4xl mx-auto px-6">
+    <section id="agendar" className="py-14 lg:py-24 bg-card/30">
+      <div className="max-w-4xl mx-auto px-5 sm:px-6">
         <p className="text-xs uppercase tracking-[0.25em] text-primary font-medium mb-5">Agendamento</p>
-        <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-3 text-balance">
+        <h2 className="text-2xl md:text-4xl font-bold text-foreground mb-3 text-balance">
           Agende sua sessão online
         </h2>
         <p className="text-muted-foreground text-base leading-relaxed mb-10 max-w-lg">
@@ -256,11 +256,11 @@ const AgendarSection = () => {
 
 /* ── CONTATO ── */
 const ContatoSection = () => (
-  <section id="contato" className="py-24 scroll-mt-20">
-    <div className="max-w-6xl mx-auto px-6">
+<section id="contato" className="py-14 lg:py-24">
+    <div className="max-w-6xl mx-auto px-5 sm:px-6">
       <div className="max-w-lg">
         <p className="text-xs uppercase tracking-[0.25em] text-primary font-medium mb-5">Contato</p>
-        <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-8 text-balance">
+        <h2 className="text-2xl md:text-4xl font-bold text-foreground mb-8 text-balance">
           Vamos conversar?
         </h2>
 
