@@ -23,10 +23,12 @@ No **SQL Editor** do backend, execute:
 ```sql
 INSERT INTO public.user_roles (user_id, role)
 VALUES ('COLE_O_UUID_AQUI', 'admin')
-ON CONFLICT DO NOTHING;
+ON CONFLICT (user_id) DO UPDATE SET role = 'admin';
 ```
 
 Substitua `COLE_O_UUID_AQUI` pelo UUID real copiado no passo anterior.
+
+> A tabela possui constraint `UNIQUE (user_id)`, garantindo no máximo 1 role por usuário.
 
 ### 3. Testar o acesso
 
