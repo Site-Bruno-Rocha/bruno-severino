@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { Menu, X, Mail, MessageCircle } from "lucide-react";
 import CTAButton from "./CTAButton";
 import { EMAIL_PLACEHOLDER, WHATSAPP_URL, CRP, INSTAGRAM_URL } from "@/config";
@@ -120,15 +121,22 @@ const Header = () => {
             </button>
           </div>
         </div>
+      </header>
 
-        {/* Mobile menu — slide overlay */}
+      {/* Mobile menu — rendered via portal to avoid header's stacking context */}
+      {createPortal(
         <div
-          className={`lg:hidden fixed inset-0 top-0 z-50 transition-all duration-300 ${
+          className={`lg:hidden fixed inset-0 z-[9999] transition-all duration-300 ${
             open ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
           }`}
+          style={{ isolation: "isolate" }}
         >
           {/* Backdrop */}
-          <div className="absolute inset-0 bg-black/70" onClick={() => setOpen(false)} />
+          <div
+            className="absolute inset-0"
+            style={{ backgroundColor: "rgba(0,0,0,0.75)" }}
+            onClick={() => setOpen(false)}
+          />
           {/* Panel */}
           <div
             className={`absolute right-0 top-0 h-full w-[280px] border-l border-primary/15 shadow-2xl shadow-black/80 transition-transform duration-300 ${
@@ -167,8 +175,9 @@ const Header = () => {
               </div>
             </nav>
           </div>
-        </div>
-      </header>
+        </div>,
+        document.body
+      )}
     </>
   );
 };
