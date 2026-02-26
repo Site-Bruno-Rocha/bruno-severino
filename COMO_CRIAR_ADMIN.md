@@ -22,7 +22,8 @@ No **SQL Editor** do backend, execute:
 
 ```sql
 INSERT INTO public.user_roles (user_id, role)
-VALUES ('COLE_O_UUID_AQUI', 'admin');
+VALUES ('COLE_O_UUID_AQUI', 'admin')
+ON CONFLICT DO NOTHING;
 ```
 
 Substitua `COLE_O_UUID_AQUI` pelo UUID real copiado no passo anterior.
