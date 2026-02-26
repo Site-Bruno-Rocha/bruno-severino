@@ -19,7 +19,7 @@ const Footer = () => {
             <img
               src="/images/logo-bruno-rocha.png"
               alt="Bruno Rocha • Psicólogo (Psicanálise)"
-              className="h-8 mb-2"
+              className="h-14 mb-2"
             />
             <p className="text-muted-foreground text-xs mt-1">
               Psicólogo · Psicanálise · CRP {CRP}
@@ -53,7 +53,15 @@ const Footer = () => {
           © {year} Bruno Severino Rocha — Todos os direitos reservados.
         </p>
         <p className="text-xs text-muted-foreground/40 mt-2 text-center">
-          Criado por Next Corporation
+          Criado por{" "}
+          <a
+            href="https://www.instagram.com/next.corporation_/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:text-muted-foreground/70 hover:underline underline-offset-2 transition-colors"
+          >
+            Next Corporation
+          </a>
         </p>
       </div>
     </footer>
