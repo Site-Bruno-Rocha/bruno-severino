@@ -59,7 +59,7 @@ const AdminLogin = () => {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background px-6">
         <div className="w-full max-w-sm text-center space-y-4">
-          <img src="/images/logo-br.png" alt="BR" className="h-12 mx-auto invert" />
+          <img src="/images/logo-bruno-rocha-full.png" alt="Bruno Rocha • Psicólogo" className="h-10 sm:h-14 mx-auto" />
           <h1 className="text-xl font-semibold text-foreground">Sem permissão</h1>
           <p className="text-sm text-muted-foreground">
             Conta autenticada, porém sem permissão de administrador.
@@ -125,8 +125,8 @@ const AdminLogin = () => {
     <div className="min-h-screen flex items-center justify-center bg-background px-6">
       <div className="w-full max-w-sm">
         <div className="text-center mb-8">
-          <img src="/images/logo-br.png" alt="BR" className="h-12 mx-auto mb-4 invert" />
-          <h1 className="text-xl font-semibold text-foreground">Admin · Blog</h1>
+          <img src="/images/logo-bruno-rocha-full.png" alt="Bruno Rocha • Psicólogo" className="h-10 sm:h-14 mx-auto mb-4" />
+          <h1 className="text-xl font-semibold text-foreground">Admin</h1>
           <p className="text-sm text-muted-foreground mt-1">Acesso restrito</p>
         </div>
 
