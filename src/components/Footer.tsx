@@ -19,7 +19,7 @@ const Footer = () => {
             <img
               src="/images/logo-bruno-rocha.png"
               alt="Bruno Rocha • Psicólogo (Psicanálise)"
-              className="h-7 mb-2"
+              className="h-8 mb-2"
             />
             <p className="text-muted-foreground text-xs mt-1">
               Psicólogo · Psicanálise · CRP {CRP}
@@ -45,6 +45,7 @@ const Footer = () => {
             <a href="#video" className="hover:text-foreground transition-colors">Vídeo</a>
             <a href="#blog" className="hover:text-foreground transition-colors">Blog</a>
             <a href="#agendar" className="hover:text-foreground transition-colors">Agendar</a>
+            <a href="/admin/login" className="hover:text-foreground transition-colors opacity-40 hover:opacity-70">Admin</a>
           </nav>
         </div>
 
