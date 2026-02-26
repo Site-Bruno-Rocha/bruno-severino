@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
-import { fetchPostById, createPost, updatePost, type DbPost } from "@/hooks/usePosts";
+import { fetchPostById, createPost, updatePost } from "@/hooks/usePosts";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { ArrowLeft, Save, Send } from "lucide-react";
 import { toast } from "sonner";
+import AdminLayout from "@/components/admin/AdminLayout";
 
 function slugify(text: string): string {
   return text
@@ -90,77 +91,73 @@ const PostEditor = () => {
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      <header className="border-b border-border/40 bg-card/50 backdrop-blur-sm sticky top-0 z-30">
-        <div className="max-w-3xl mx-auto px-6 h-14 flex items-center justify-between">
-          <Button variant="ghost" size="sm" onClick={() => navigate("/admin/posts")}>
-            <ArrowLeft size={14} className="mr-1" /> Posts
+    <AdminLayout>
+      <div className="flex items-center justify-between mb-8">
+        <Button variant="ghost" size="sm" onClick={() => navigate("/admin/posts")}>
+          <ArrowLeft size={14} className="mr-1" /> Posts
+        </Button>
+        <div className="flex items-center gap-2">
+          <Button variant="outline" size="sm" onClick={() => handleSave("draft")} disabled={saving}>
+            <Save size={14} className="mr-1" /> Rascunho
           </Button>
-          <div className="flex items-center gap-2">
-            <Button variant="outline" size="sm" onClick={() => handleSave("draft")} disabled={saving}>
-              <Save size={14} className="mr-1" /> Rascunho
-            </Button>
-            <Button size="sm" onClick={() => handleSave("published")} disabled={saving}>
-              <Send size={14} className="mr-1" /> Publicar
-            </Button>
-          </div>
+          <Button size="sm" onClick={() => handleSave("published")} disabled={saving}>
+            <Send size={14} className="mr-1" /> Publicar
+          </Button>
         </div>
-      </header>
+      </div>
 
-      <main className="max-w-3xl mx-auto px-6 py-10">
-        <h1 className="text-2xl font-bold text-foreground mb-8">
-          {isNew ? "Novo post" : "Editar post"}
-        </h1>
+      <h1 className="text-2xl font-bold text-foreground mb-8">
+        {isNew ? "Novo post" : "Editar post"}
+      </h1>
 
-        <div className="space-y-6">
+      <div className="space-y-6 max-w-3xl">
+        <div>
+          <Label htmlFor="title">Título</Label>
+          <Input id="title" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Título do post" className="mt-1" />
+        </div>
+
+        <div>
+          <Label htmlFor="slug">Slug</Label>
+          <Input
+            id="slug"
+            value={slug}
+            onChange={(e) => { setAutoSlug(false); setSlug(e.target.value); }}
+            placeholder="slug-do-post"
+            className="mt-1 font-mono text-sm"
+          />
+        </div>
+
+        <div className="grid grid-cols-2 gap-4">
           <div>
-            <Label htmlFor="title">Título</Label>
-            <Input id="title" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Título do post" className="mt-1" />
+            <Label htmlFor="category">Categoria</Label>
+            <Input id="category" value={category} onChange={(e) => setCategory(e.target.value)} placeholder="Geral" className="mt-1" />
           </div>
-
           <div>
-            <Label htmlFor="slug">Slug</Label>
-            <Input
-              id="slug"
-              value={slug}
-              onChange={(e) => { setAutoSlug(false); setSlug(e.target.value); }}
-              placeholder="slug-do-post"
-              className="mt-1 font-mono text-sm"
-            />
-          </div>
-
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <Label htmlFor="category">Categoria</Label>
-              <Input id="category" value={category} onChange={(e) => setCategory(e.target.value)} placeholder="Geral" className="mt-1" />
-            </div>
-            <div>
-              <Label>Status</Label>
-              <div className="mt-1 flex items-center gap-3 h-10">
-                <label className="flex items-center gap-1.5 text-sm text-muted-foreground cursor-pointer">
-                  <input type="radio" checked={status === "draft"} onChange={() => setStatus("draft")} className="accent-primary" />
-                  Rascunho
-                </label>
-                <label className="flex items-center gap-1.5 text-sm text-muted-foreground cursor-pointer">
-                  <input type="radio" checked={status === "published"} onChange={() => setStatus("published")} className="accent-primary" />
-                  Publicado
-                </label>
-              </div>
+            <Label>Status</Label>
+            <div className="mt-1 flex items-center gap-3 h-10">
+              <label className="flex items-center gap-1.5 text-sm text-muted-foreground cursor-pointer">
+                <input type="radio" checked={status === "draft"} onChange={() => setStatus("draft")} className="accent-primary" />
+                Rascunho
+              </label>
+              <label className="flex items-center gap-1.5 text-sm text-muted-foreground cursor-pointer">
+                <input type="radio" checked={status === "published"} onChange={() => setStatus("published")} className="accent-primary" />
+                Publicado
+              </label>
             </div>
           </div>
-
-          <div>
-            <Label htmlFor="excerpt">Resumo</Label>
-            <Textarea id="excerpt" value={excerpt} onChange={(e) => setExcerpt(e.target.value)} placeholder="Uma breve descrição do post..." rows={3} className="mt-1" />
-          </div>
-
-          <div>
-            <Label htmlFor="content">Conteúdo</Label>
-            <Textarea id="content" value={content} onChange={(e) => setContent(e.target.value)} placeholder="Escreva o conteúdo do post aqui..." rows={16} className="mt-1 font-mono text-sm" />
-          </div>
         </div>
-      </main>
-    </div>
+
+        <div>
+          <Label htmlFor="excerpt">Resumo</Label>
+          <Textarea id="excerpt" value={excerpt} onChange={(e) => setExcerpt(e.target.value)} placeholder="Uma breve descrição do post..." rows={3} className="mt-1" />
+        </div>
+
+        <div>
+          <Label htmlFor="content">Conteúdo</Label>
+          <Textarea id="content" value={content} onChange={(e) => setContent(e.target.value)} placeholder="Escreva o conteúdo do post aqui..." rows={16} className="mt-1 font-mono text-sm" />
+        </div>
+      </div>
+    </AdminLayout>
   );
 };
 
