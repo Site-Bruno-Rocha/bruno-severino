@@ -10,8 +10,8 @@ const bullets = [
 ];
 
 const VideoSection = () => (
-  <section id="video" className="py-24 bg-card/30 scroll-mt-20">
-    <div className="max-w-6xl mx-auto px-6">
+<section id="video" className="py-14 lg:py-24 bg-card/30">
+    <div className="max-w-6xl mx-auto px-5 sm:px-6">
       <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
         {/* Left — text */}
         <div>

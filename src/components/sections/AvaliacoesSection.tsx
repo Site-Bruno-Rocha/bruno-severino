@@ -24,8 +24,8 @@ const Stars = () => (
 );
 
 const AvaliacoesSection = () => (
-  <section id="avaliacoes" className="py-24 scroll-mt-20">
-    <div className="max-w-6xl mx-auto px-6">
+<section id="avaliacoes" className="py-14 lg:py-24">
+    <div className="max-w-6xl mx-auto px-5 sm:px-6">
       <p className="text-xs uppercase tracking-[0.25em] text-primary font-medium mb-5">Avaliações</p>
       <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4 text-balance">
         O que dizem os pacientes
@@ -34,7 +34,7 @@ const AvaliacoesSection = () => (
         Avaliações do Google <span className="text-muted-foreground/50">(integração em breve)</span>
       </p>
 
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
         {mockReviews.map((review) => (
           <div
             key={review.initials}
