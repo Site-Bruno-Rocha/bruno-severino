@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Navigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -14,10 +14,18 @@ const AdminLogin = () => {
   const { signIn, user, isAdmin, loading } = useAuth();
   const navigate = useNavigate();
 
-  // If already logged in as admin, redirect
-  if (!loading && user && isAdmin) {
-    navigate("/admin/posts", { replace: true });
-    return null;
+  // Show loading while auth state resolves
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-background">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
+      </div>
+    );
+  }
+
+  // Already logged in as admin → go to dashboard
+  if (user && isAdmin) {
+    return <Navigate to="/admin" replace />;
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -29,7 +37,7 @@ const AdminLogin = () => {
     if (err) {
       setError("E-mail ou senha incorretos.");
     } else {
-      navigate("/admin/posts", { replace: true });
+      navigate("/admin", { replace: true });
     }
   };
 
