@@ -2,78 +2,126 @@ import { useState, useEffect, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import type { User, Session } from "@supabase/supabase-js";
 
+const ALLOWED_ADMIN_EMAILS = ["brunorocha.psicologo@gmail.com"];
+
+type AdminDebugState = {
+  userEmail: string | null;
+  userId: string | null;
+  supabaseUrl: string;
+  projectId: string;
+  emailAllowed: boolean | null;
+  rpcResult: boolean | null;
+  rpcError: string | null;
+  roleRow: { role: string; user_id: string } | null;
+  roleError: string | null;
+};
+
+const EMPTY_ADMIN_DEBUG: AdminDebugState = {
+  userEmail: null,
+  userId: null,
+  supabaseUrl: import.meta.env.VITE_SUPABASE_URL ?? "",
+  projectId: import.meta.env.VITE_SUPABASE_PROJECT_ID ?? "",
+  emailAllowed: null,
+  rpcResult: null,
+  rpcError: null,
+  roleRow: null,
+  roleError: null,
+};
+
 export function useAuth() {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [adminDebug, setAdminDebug] = useState<AdminDebugState>(EMPTY_ADMIN_DEBUG);
 
-  const checkAdmin = useCallback(async (userId: string): Promise<boolean> => {
+  const checkAdmin = useCallback(async (authUser: User): Promise<boolean> => {
+    const userEmail = authUser.email?.toLowerCase() ?? null;
+    const emailAllowed = !!userEmail && ALLOWED_ADMIN_EMAILS.includes(userEmail);
+
     let admin = false;
+    let rpcResult: boolean | null = null;
+    let rpcError: string | null = null;
+    let roleRow: { role: string; user_id: string } | null = null;
+    let roleError: string | null = null;
 
-    // Method 1: RPC
-    try {
-      const { data: rpcData, error: rpcError } = await supabase.rpc("has_role", {
-        _user_id: userId,
-        _role: "admin",
-      });
-      if (import.meta.env.DEV) {
-        console.log("[Auth] rpc has_role admin:", rpcData, rpcError?.message);
+    if (emailAllowed) {
+      try {
+        const { data: rpcData, error: rpcErr } = await supabase.rpc("has_role", {
+          _user_id: authUser.id,
+          _role: "admin",
+        });
+
+        rpcResult = rpcData === true;
+        rpcError = rpcErr?.message ?? null;
+        if (!rpcErr && rpcData === true) admin = true;
+      } catch (e) {
+        rpcError = e instanceof Error ? e.message : "Erro desconhecido na RPC has_role";
       }
-      if (!rpcError && rpcData === true) admin = true;
-    } catch (e) {
-      console.error("[Auth] RPC exception", e);
-    }
 
-    // Method 2: Direct query (fallback)
-    if (!admin) {
-      const { data: roleRow, error: roleError } = await supabase
+      const { data: roleData, error: roleErr } = await supabase
         .from("user_roles")
         .select("role, user_id")
-        .eq("user_id", userId)
+        .eq("user_id", authUser.id)
         .maybeSingle();
-      if (import.meta.env.DEV) {
-        console.log("[Auth] user_roles row:", roleRow, roleError?.message);
-      }
-      if (!roleError && roleRow?.role === "admin") admin = true;
+
+      roleError = roleErr?.message ?? null;
+      roleRow = roleData ? { role: String(roleData.role), user_id: roleData.user_id } : null;
+      if (roleRow?.role === "admin") admin = true;
     }
 
+    const nextDebug: AdminDebugState = {
+      userEmail,
+      userId: authUser.id,
+      supabaseUrl: import.meta.env.VITE_SUPABASE_URL ?? "",
+      projectId: import.meta.env.VITE_SUPABASE_PROJECT_ID ?? "",
+      emailAllowed,
+      rpcResult,
+      rpcError,
+      roleRow,
+      roleError,
+    };
+
+    setAdminDebug(nextDebug);
     setIsAdmin(admin);
+
+    if (import.meta.env.DEV) {
+      console.log("[Auth] SUPABASE_URL", nextDebug.supabaseUrl);
+      console.log("[Auth] SUPABASE_PROJECT_ID", nextDebug.projectId);
+      console.log("[Auth] user.email", userEmail);
+      console.log("[Auth] user.id", authUser.id);
+      console.log("[Auth] email allowlist", emailAllowed);
+      console.log("[Auth] rpc has_role admin", rpcResult, rpcError);
+      console.log("[Auth] user_roles row", roleRow, roleError);
+    }
+
     return admin;
   }, []);
 
   useEffect(() => {
-    if (import.meta.env.DEV) {
-      console.log("[Auth] SUPABASE_URL", import.meta.env.VITE_SUPABASE_URL);
-    }
+    const applySession = async (nextSession: Session | null) => {
+      setSession(nextSession);
+      const nextUser = nextSession?.user ?? null;
+      setUser(nextUser);
 
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (_event, session) => {
-        setSession(session);
-        setUser(session?.user ?? null);
-        if (session?.user) {
-          if (import.meta.env.DEV) {
-            console.log("[Auth] user.id", session.user.id);
-          }
-          setTimeout(() => checkAdmin(session.user.id), 0);
-        } else {
-          setIsAdmin(false);
-        }
-        setLoading(false);
-      }
-    );
-
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      setUser(session?.user ?? null);
-      if (session?.user) {
-        if (import.meta.env.DEV) {
-          console.log("[Auth] user.id (getSession)", session.user.id);
-        }
-        checkAdmin(session.user.id).then(() => setLoading(false));
+      if (nextUser) {
+        await checkAdmin(nextUser);
       } else {
-        setLoading(false);
+        setIsAdmin(false);
+        setAdminDebug(EMPTY_ADMIN_DEBUG);
       }
+
+      setLoading(false);
+    };
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, nextSession) => {
+      setLoading(true);
+      void applySession(nextSession);
+    });
+
+    setLoading(true);
+    void supabase.auth.getSession().then(({ data: { session: nextSession } }) => {
+      void applySession(nextSession);
     });
 
     return () => subscription.unsubscribe();
@@ -89,7 +137,8 @@ export function useAuth() {
     setIsAdmin(false);
     setUser(null);
     setSession(null);
+    setAdminDebug(EMPTY_ADMIN_DEBUG);
   };
 
-  return { user, session, isAdmin, loading, signIn, signOut, checkAdmin };
+  return { user, session, isAdmin, loading, signIn, signOut, checkAdmin, adminDebug };
 }
