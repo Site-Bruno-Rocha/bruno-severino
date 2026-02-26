@@ -1,19 +1,8 @@
 import { Navigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
-import { toast } from "sonner";
-import { useEffect, useRef } from "react";
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { user, isAdmin, loading } = useAuth();
-  const toastShown = useRef(false);
-
-  // Show toast once when non-admin authenticated user tries to access
-  useEffect(() => {
-    if (!loading && user && !isAdmin && !toastShown.current) {
-      toastShown.current = true;
-      toast.error("Acesso restrito. Apenas administradores.");
-    }
-  }, [loading, user, isAdmin]);
 
   if (loading) {
     return (
@@ -24,7 +13,7 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   }
 
   if (!user) return <Navigate to="/admin/login" replace />;
-  if (!isAdmin) return <Navigate to="/" replace />;
+  if (!isAdmin) return <Navigate to="/admin/login" replace />;
 
   return <>{children}</>;
 };

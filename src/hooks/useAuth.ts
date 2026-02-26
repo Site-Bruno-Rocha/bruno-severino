@@ -8,24 +8,53 @@ export function useAuth() {
   const [isAdmin, setIsAdmin] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  const checkAdmin = useCallback(async (userId: string) => {
-    const { data } = await supabase
-      .from("user_roles")
-      .select("role")
-      .eq("user_id", userId)
-      .eq("role", "admin")
-      .maybeSingle();
-    setIsAdmin(!!data);
+  const checkAdmin = useCallback(async (userId: string): Promise<boolean> => {
+    let admin = false;
+
+    // Method 1: RPC
+    try {
+      const { data: rpcData, error: rpcError } = await supabase.rpc("has_role", {
+        _user_id: userId,
+        _role: "admin",
+      });
+      if (import.meta.env.DEV) {
+        console.log("[Auth] rpc has_role admin:", rpcData, rpcError?.message);
+      }
+      if (!rpcError && rpcData === true) admin = true;
+    } catch (e) {
+      console.error("[Auth] RPC exception", e);
+    }
+
+    // Method 2: Direct query (fallback)
+    if (!admin) {
+      const { data: roleRow, error: roleError } = await supabase
+        .from("user_roles")
+        .select("role, user_id")
+        .eq("user_id", userId)
+        .maybeSingle();
+      if (import.meta.env.DEV) {
+        console.log("[Auth] user_roles row:", roleRow, roleError?.message);
+      }
+      if (!roleError && roleRow?.role === "admin") admin = true;
+    }
+
+    setIsAdmin(admin);
+    return admin;
   }, []);
 
   useEffect(() => {
-    // Set up listener BEFORE getSession
+    if (import.meta.env.DEV) {
+      console.log("[Auth] SUPABASE_URL", import.meta.env.VITE_SUPABASE_URL);
+    }
+
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       async (_event, session) => {
         setSession(session);
         setUser(session?.user ?? null);
         if (session?.user) {
-          // Use setTimeout to avoid Supabase client deadlock
+          if (import.meta.env.DEV) {
+            console.log("[Auth] user.id", session.user.id);
+          }
           setTimeout(() => checkAdmin(session.user.id), 0);
         } else {
           setIsAdmin(false);
@@ -38,22 +67,29 @@ export function useAuth() {
       setSession(session);
       setUser(session?.user ?? null);
       if (session?.user) {
-        checkAdmin(session.user.id);
+        if (import.meta.env.DEV) {
+          console.log("[Auth] user.id (getSession)", session.user.id);
+        }
+        checkAdmin(session.user.id).then(() => setLoading(false));
+      } else {
+        setLoading(false);
       }
-      setLoading(false);
     });
 
     return () => subscription.unsubscribe();
   }, [checkAdmin]);
 
   const signIn = async (email: string, password: string) => {
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
-    return { error };
+    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+    return { data, error };
   };
 
   const signOut = async () => {
     await supabase.auth.signOut();
+    setIsAdmin(false);
+    setUser(null);
+    setSession(null);
   };
 
-  return { user, session, isAdmin, loading, signIn, signOut };
+  return { user, session, isAdmin, loading, signIn, signOut, checkAdmin };
 }
