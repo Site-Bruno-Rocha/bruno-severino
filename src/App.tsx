@@ -8,14 +8,21 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 
 const AdminLogin = lazy(() => import("./pages/admin/Login"));
+const AdminDashboard = lazy(() => import("./pages/admin/Dashboard"));
 const AdminPosts = lazy(() => import("./pages/admin/Posts"));
 const AdminPostEditor = lazy(() => import("./pages/admin/PostEditor"));
 const ProtectedRoute = lazy(() => import("./components/admin/ProtectedRoute"));
 
 const queryClient = new QueryClient();
 
+const LoadingSpinner = () => (
+  <div className="min-h-screen flex items-center justify-center bg-background">
+    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
+  </div>
+);
+
 const AdminProtected = ({ children }: { children: React.ReactNode }) => (
-  <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-background"><div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" /></div>}>
+  <Suspense fallback={<LoadingSpinner />}>
     <ProtectedRoute>{children}</ProtectedRoute>
   </Suspense>
 );
@@ -26,7 +33,7 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <Suspense fallback={null}>
+        <Suspense fallback={<LoadingSpinner />}>
           <Routes>
             <Route path="/" element={<Index />} />
             {/* Redirect old routes to one-page */}
@@ -34,8 +41,8 @@ const App = () => (
             <Route path="/blog/:slug" element={<Navigate to="/#blog" replace />} />
             <Route path="/agendar" element={<Navigate to="/#agendar" replace />} />
             {/* Admin routes */}
-            <Route path="/admin" element={<Navigate to="/admin/posts" replace />} />
             <Route path="/admin/login" element={<AdminLogin />} />
+            <Route path="/admin" element={<AdminProtected><AdminDashboard /></AdminProtected>} />
             <Route path="/admin/posts" element={<AdminProtected><AdminPosts /></AdminProtected>} />
             <Route path="/admin/posts/new" element={<AdminProtected><AdminPostEditor /></AdminProtected>} />
             <Route path="/admin/posts/:id" element={<AdminProtected><AdminPostEditor /></AdminProtected>} />
