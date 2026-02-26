@@ -2,7 +2,7 @@ import CTAButton from "@/components/CTAButton";
 import WhatsAppButton from "@/components/WhatsAppButton";
 
 const HeroSection = () => (
-  <section id="inicio" className="relative min-h-[85vh] lg:min-h-[92vh] flex items-center pt-24 lg:pt-28 pb-14 lg:pb-20 overflow-hidden">
+  <section id="inicio" className="relative min-h-[85vh] lg:min-h-[92vh] flex items-center pt-28 lg:pt-28 pb-14 lg:pb-20 overflow-hidden">
     {/* Ambient glows */}
     <div className="absolute top-[15%] left-[10%] w-[500px] h-[500px] bg-primary/8 rounded-full blur-[150px] pointer-events-none" aria-hidden="true" />
     <div className="absolute bottom-[10%] right-[5%] w-[400px] h-[350px] bg-primary/5 rounded-full blur-[120px] pointer-events-none" aria-hidden="true" />

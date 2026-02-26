@@ -43,7 +43,7 @@ const Header = () => {
   return (
     <>
       {/* Contact pill — top bar */}
-      <div className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? "h-0 opacity-0 pointer-events-none" : "h-8"}`}>
+      <div className={`hidden lg:block fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? "h-0 opacity-0 pointer-events-none" : "h-8"}`}>
         <div className="h-full bg-secondary/80 backdrop-blur-sm border-b border-border/40">
           <div className="max-w-6xl mx-auto px-6 h-full flex items-center justify-between text-xs text-muted-foreground">
             <span className="hidden sm:inline">Seg–Sáb · Somente com hora marcada</span>
@@ -69,8 +69,8 @@ const Header = () => {
       <header
         className={`fixed left-0 right-0 z-40 transition-all duration-300 border-b border-border/30 ${
           scrolled
-            ? "top-0 bg-background/90 backdrop-blur-md h-20"
-            : "top-8 bg-background/70 backdrop-blur-sm h-[5.5rem]"
+            ? "top-0 bg-background/90 backdrop-blur-md h-16 lg:h-20"
+            : "top-0 lg:top-8 bg-background backdrop-blur-none lg:bg-background/70 lg:backdrop-blur-sm h-16 lg:h-[5.5rem]"
         }`}
       >
         <div className="max-w-6xl mx-auto px-6 h-full flex items-center justify-between">
@@ -128,14 +128,15 @@ const Header = () => {
           }`}
         >
           {/* Backdrop */}
-          <div className="absolute inset-0 bg-black/75 backdrop-blur-sm" onClick={() => setOpen(false)} />
+          <div className="absolute inset-0 bg-black/70" onClick={() => setOpen(false)} />
           {/* Panel */}
           <div
-            className={`absolute right-0 top-0 h-full w-[280px] bg-[hsl(220,28%,7%)] border-l border-primary/15 shadow-2xl shadow-black/80 transition-transform duration-300 ${
+            className={`absolute right-0 top-0 h-full w-[280px] border-l border-primary/15 shadow-2xl shadow-black/80 transition-transform duration-300 ${
               open ? "translate-x-0" : "translate-x-full"
             }`}
+            style={{ backgroundColor: "hsl(220, 30%, 8%)" }}
           >
-            <div className="flex items-center justify-between px-5 h-16 border-b border-primary/10 bg-primary/[0.04]">
+            <div className="flex items-center justify-between px-5 h-16 border-b border-primary/10" style={{ backgroundColor: "hsl(220, 30%, 10%)" }}>
               <div className="flex items-center gap-2">
                 <img src="/images/logo-br.png" alt="BR" className="h-7" />
                 <span className="text-[10px] text-muted-foreground/50 font-medium tracking-wide">CRP {CRP}</span>
