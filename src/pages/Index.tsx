@@ -13,33 +13,43 @@ import { posts as staticPosts, type Post } from "@/data/posts";
 import { fetchPublishedPosts, type DbPost } from "@/hooks/usePosts";
 import {
   Clock, Home, MapPin, Monitor, ShieldCheck, Mail, MessageCircle, FileText, ExternalLink,
-  GraduationCap, Users, BookOpen, Award,
+  Users, BookOpen, Brain, Briefcase, Scale, ClipboardCheck, Stethoscope, HeartHandshake,
 } from "lucide-react";
 
 import HeroSection from "@/components/sections/HeroSection";
 import AvaliacoesSection from "@/components/sections/AvaliacoesSection";
 import VideoSection from "@/components/sections/VideoSection";
 
-/* ── SOBRE ── */
+/* ── SOBRE MIM ── */
 const stats = [
-  { icon: <GraduationCap size={20} />, label: "Formado em", value: "2020" },
-  { icon: <Award size={20} />, label: "Atendendo desde", value: "2021" },
-  { icon: <Users size={20} />, label: "Pacientes", value: "+200" },
+  { icon: <Users size={20} />, label: "Pacientes atendidos", value: "+200" },
   { icon: <BookOpen size={20} />, label: "Horas de estudo", value: "+5.000" },
 ];
 
 const SobreSection = () => (
-<section id="sobre" className="py-14 lg:py-24">
+  <section id="sobre" className="py-14 lg:py-24">
     <div className="max-w-6xl mx-auto px-5 sm:px-6">
-      <div className="grid md:grid-cols-2 gap-10 lg:gap-16 items-start">
+      <div className="grid md:grid-cols-[1.2fr_0.8fr] gap-10 lg:gap-16 items-start">
         <div>
-          <p className="text-xs uppercase tracking-[0.25em] text-primary font-medium mb-5">Sobre</p>
+          <p className="text-xs uppercase tracking-[0.25em] text-primary font-medium mb-5">Sobre Mim</p>
           <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-6 text-balance">
             Bruno Severino Rocha
           </h2>
           <div className="space-y-4 text-muted-foreground leading-relaxed">
-            <p>Psicólogo formado em 2020. Atendo clinicamente desde 2021 pela abordagem psicanalítica, com foco em escuta individualizada e atenção à singularidade de cada pessoa.</p>
-            <p>Experiência no atendimento de ansiedade, depressão, esquizofrenia e outras demandas emocionais.</p>
+            <p>
+              Sou psicólogo formado em 2020, com atuação clínica desde 2021 pela abordagem psicanalítica. Meu trabalho é orientado pela escuta qualificada, pelo respeito à singularidade de cada pessoa e pelo compromisso ético com o cuidado em saúde mental.
+            </p>
+            <p>
+              Na psicoterapia, ofereço um espaço de fala e reflexão que possibilita a compreensão de conflitos emocionais, angústias e padrões de repetição, promovendo autoconhecimento e mudanças consistentes. Possuo experiência no atendimento de ansiedade, borderline, depressão, esquizofrenia e outras demandas emocionais.
+            </p>
+            <p>
+              Além da clínica, realizo avaliações psicológicas com rigor técnico, incluindo orientação vocacional e elaboração de laudos para cirurgia bariátrica, vasectomia e laqueadura. Também atuo como psicólogo perito judicial e assistente técnico, desenvolvendo avaliações e documentos técnicos no contexto jurídico, sempre com imparcialidade, precisão e alinhamento às normativas do Conselho Federal de Psicologia.
+            </p>
+          </div>
+          <div className="mt-6 rounded-xl border border-primary/20 bg-primary/5 p-4">
+            <p className="text-sm text-foreground/90 leading-relaxed">
+              <strong className="text-primary">Compromisso:</strong> Oferecer um atendimento ético, responsável e individualizado, em um ambiente seguro e confidencial.
+            </p>
           </div>
           <p className="text-xs text-muted-foreground/60 mt-6">CRP: {CRP}</p>
         </div>
@@ -59,38 +69,95 @@ const SobreSection = () => (
   </section>
 );
 
-/* ── COMO FUNCIONA ── */
-const ComoFuncionaSection = () => (
-<section id="como-funciona" className="py-14 lg:py-24 bg-card/30">
+/* ── SERVIÇOS OFERECIDOS ── */
+const servicos = [
+  {
+    icon: <Brain size={20} />,
+    title: "Psicoterapia Individual",
+    desc: "Um processo terapêutico que visa ajudar você a compreender seus sentimentos, pensamentos e comportamentos, bem como a lidar com seus desafios pessoais. A psicoterapia individual pode ajudar a tratar questões como ansiedade, depressão, estresse, baixa autoestima e dificuldades de relacionamento.",
+  },
+  {
+    icon: <Briefcase size={20} />,
+    title: "Orientação Vocacional e de Carreira",
+    desc: "Serviço destinado a auxiliar na exploração e escolha de carreiras alinhadas com seus interesses, habilidades e valores. Através de avaliações e sessões personalizadas, oriento na tomada de decisões educacionais e profissionais significativas.",
+  },
+  {
+    icon: <Stethoscope size={20} />,
+    title: "Avaliação Psicológica Para Cirurgia Bariátrica",
+    desc: "Análise das condições emocionais do paciente, compreensão sobre o procedimento, expectativas em relação aos resultados e preparação para as mudanças no pós-operatório. Ao final, é emitido laudo psicológico conforme as normas do CFP.",
+  },
+  {
+    icon: <ClipboardCheck size={20} />,
+    title: "Avaliação Psicológica Para Laqueadura e Vasectomia",
+    desc: "Avaliação da maturidade emocional, entendimento sobre o caráter definitivo do procedimento e aspectos psicológicos envolvidos na decisão pela esterilização cirúrgica. Documento emitido conforme as normas do CFP.",
+  },
+  {
+    icon: <HeartHandshake size={20} />,
+    title: "Assistente Técnico Judicial",
+    desc: "Representação de uma das partes do processo judicial, com análise do laudo pericial, elaboração de parecer técnico, formulação de quesitos e contribuição para o esclarecimento de aspectos psicológicos relevantes ao caso.",
+  },
+  {
+    icon: <Scale size={20} />,
+    title: "Perícia Psicológica Judicial",
+    desc: "Avaliação psicológica determinada pelo juízo, envolvendo entrevistas, análise técnica e utilização de instrumentos psicológicos apropriados. Resulta em laudo pericial fundamentado e imparcial, destinado a subsidiar decisões judiciais.",
+  },
+];
+
+const ServicosSection = () => (
+  <section id="servicos" className="py-14 lg:py-24 bg-card/30">
+    <div className="max-w-6xl mx-auto px-5 sm:px-6">
+      <p className="text-xs uppercase tracking-[0.25em] text-primary font-medium mb-5">Serviços Oferecidos</p>
+      <h2 className="text-2xl md:text-4xl font-bold text-foreground mb-4 text-balance">
+        Como posso ajudar
+      </h2>
+      <p className="text-muted-foreground mb-8 lg:mb-12 max-w-lg">
+        Conheça os serviços que ofereço, sempre com ética, responsabilidade e alinhamento às normativas profissionais.
+      </p>
+      <Accordion type="single" collapsible className="space-y-2 max-w-3xl">
+        {servicos.map((s, i) => (
+          <AccordionItem key={i} value={`servico-${i}`} className="border border-border/50 rounded-xl px-5 bg-card/50">
+            <AccordionTrigger className="text-sm font-medium text-foreground hover:no-underline py-4">
+              <span className="flex items-center gap-3">
+                <span className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary shrink-0">
+                  {s.icon}
+                </span>
+                {s.title}
+              </span>
+            </AccordionTrigger>
+            <AccordionContent className="text-sm text-muted-foreground pb-4 leading-relaxed pl-11">
+              {s.desc}
+            </AccordionContent>
+          </AccordionItem>
+        ))}
+      </Accordion>
+    </div>
+  </section>
+);
+
+/* ── ABORDAGEM ── */
+const AbordagemSection = () => (
+  <section id="abordagem" className="py-14 lg:py-24">
     <div className="max-w-6xl mx-auto px-5 sm:px-6">
       <div className="max-w-2xl mx-auto">
         <p className="text-xs uppercase tracking-[0.25em] text-primary font-medium mb-5">Abordagem</p>
         <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-6 text-balance">
-          Como funciona a psicanálise
+          Psicanálise
         </h2>
-        <div className="text-muted-foreground leading-relaxed space-y-4 mb-12">
-          <p>A psicanálise investiga a mente humana e o inconsciente. A partir da fala e da escuta, buscamos compreender a origem de angústias e padrões que se repetem na vida.</p>
-          <p>É um espaço de acolhimento e reflexão — sem julgamentos, sem respostas prontas, com sigilo rigorosamente respeitado. O processo respeita o seu ritmo e a singularidade da sua história.</p>
-        </div>
 
-        <Accordion type="single" collapsible className="space-y-2">
-          <AccordionItem value="faq-1" className="border border-border/50 rounded-xl px-5 bg-card/50">
-            <AccordionTrigger className="text-sm font-medium text-foreground hover:no-underline py-4">
-              Qual a diferença entre psicoterapia e psicanálise?
-            </AccordionTrigger>
-            <AccordionContent className="text-sm text-muted-foreground pb-4 leading-relaxed">
-              Psicoterapia é um termo amplo que abrange várias abordagens. A psicanálise é uma delas — focada em compreender o inconsciente, os padrões de comportamento e as raízes emocionais de cada questão, num processo que respeita o tempo do paciente.
-            </AccordionContent>
-          </AccordionItem>
-          <AccordionItem value="faq-2" className="border border-border/50 rounded-xl px-5 bg-card/50">
-            <AccordionTrigger className="text-sm font-medium text-foreground hover:no-underline py-4">
-              Como é uma sessão?
-            </AccordionTrigger>
-            <AccordionContent className="text-sm text-muted-foreground pb-4 leading-relaxed">
-              A sessão acontece online, por videochamada, com duração de aproximadamente 50 minutos. Você fala sobre o que quiser — pensamentos, sentimentos, situações do dia a dia. Eu escuto com atenção e, juntos, vamos construindo uma compreensão mais ampla sobre você.
-            </AccordionContent>
-          </AccordionItem>
-        </Accordion>
+        <div className="space-y-8 mb-10">
+          <div>
+            <h3 className="text-lg font-semibold text-foreground mb-3">Como funciona a psicanálise?</h3>
+            <p className="text-muted-foreground leading-relaxed">
+              A psicanálise investiga a mente humana e o inconsciente. A partir da fala e da escuta, buscamos compreender a origem das angústias e padrões que se repetem na vida. É um espaço de acolhimento e reflexão — sem julgamentos, sem respostas prontas, com sigilo rigorosamente respeitado. O processo respeita seu ritmo e a singularidade de sua história.
+            </p>
+          </div>
+          <div>
+            <h3 className="text-lg font-semibold text-foreground mb-3">Qual a diferença entre psicoterapia e psicanálise?</h3>
+            <p className="text-muted-foreground leading-relaxed">
+              A psicoterapia é um termo amplo que abrange diversas abordagens. A psicanálise é uma dessas, focada em compreender o inconsciente, os padrões de comportamento e as raízes emocionais de cada questão, num processo que respeita o tempo do paciente.
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -104,7 +171,7 @@ const beneficios = [
 ];
 
 const AtendimentoSection = () => (
-<section id="atendimento" className="py-14 lg:py-24">
+  <section id="atendimento" className="py-14 lg:py-24 bg-card/30">
     <div className="max-w-6xl mx-auto px-5 sm:px-6">
       <p className="text-xs uppercase tracking-[0.25em] text-primary font-medium mb-5">Atendimento</p>
       <h2 className="text-2xl md:text-4xl font-bold text-foreground mb-4 text-balance">
@@ -121,25 +188,6 @@ const AtendimentoSection = () => (
             <p className="text-muted-foreground text-sm leading-relaxed">{b.desc}</p>
           </div>
         ))}
-      </div>
-    </div>
-  </section>
-);
-
-/* ── LAUDOS ── */
-const LaudosSection = () => (
-<section id="laudos" className="py-10 lg:py-16 bg-card/30">
-    <div className="max-w-6xl mx-auto px-5 sm:px-6">
-      <div className="flex items-start gap-5 max-w-2xl">
-        <div className="w-10 h-10 rounded-xl bg-primary/10 flex items-center justify-center text-primary shrink-0 mt-1">
-          <FileText size={20} />
-        </div>
-        <div>
-          <h2 className="text-lg font-semibold text-foreground mb-2">Emissão de laudos psicológicos</h2>
-          <p className="text-muted-foreground text-sm leading-relaxed">
-            Laudos para procedimentos de bariátrica e vasectomia, conforme critérios e avaliação individual.
-          </p>
-        </div>
       </div>
     </div>
   </section>
@@ -168,9 +216,7 @@ const BlogPreviewSection = ({ onSelectPost }: { onSelectPost: (post: Post) => vo
           setDisplayPosts(dbPosts.slice(0, 3).map(dbPostToPost));
         }
       })
-      .catch(() => {
-        // Fallback: keep static posts
-      });
+      .catch(() => {});
   }, []);
 
   return (
@@ -191,13 +237,70 @@ const BlogPreviewSection = ({ onSelectPost }: { onSelectPost: (post: Post) => vo
   );
 };
 
+/* ── DÚVIDAS FREQUENTES ── */
+const faqItems = [
+  {
+    q: "Como funcionam as sessões?",
+    a: "As sessões são feitas semanalmente com duração de 50 minutos no formato online utilizando a plataforma do Google Meet. Para uma boa experiência é importante que você disponha de uma conexão de internet estável e esteja em um local isolado para garantir privacidade e segurança. Recomendamos a utilização de fones de ouvido.",
+  },
+  {
+    q: "Quanto tempo dura o tratamento?",
+    a: "O tratamento é personalizado de acordo com as demandas de cada paciente. Sendo assim, não existe um prazo determinado para o fim.",
+  },
+  {
+    q: "Terapia online funciona?",
+    a: "Sim. Para muitas pessoas, o online funciona muito bem — inclusive por reduzir deslocamento e facilitar a consistência. O que mais importa é um ambiente minimamente reservado e uma boa conexão.",
+  },
+  {
+    q: "Terapia é só para quem está em crise?",
+    a: "Não. Muitas pessoas procuram terapia para prevenção, autoconhecimento, melhora de relacionamentos e para tomar decisões importantes com mais clareza. Você não precisa \"estar no limite\" para começar.",
+  },
+  {
+    q: "A partir de qual idade você atende?",
+    a: "A partir dos 15 anos. A adolescência é um período de muitas mudanças e a terapia pode ser uma ferramenta valiosa. Quando menor de 18 anos, é necessário que pelo menos um dos pais ou responsáveis esteja ciente e autorize o início do tratamento. Também atendo adultos de todas as idades.",
+  },
+  {
+    q: "Faz atendimento por convênio?",
+    a: "Atendo todos os convênios por meio de reembolso. O paciente paga as sessões e recebe um recibo para enviar ao convênio. É um direito legal seu escolher o profissional que irá atendê-lo. Para descobrir o valor que seu convênio reembolsa, entre em contato com a central do seu convênio.",
+  },
+  {
+    q: "Qual o valor das sessões e as formas de pagamento?",
+    a: "Por norma do Conselho Regional de Psicologia, não é permitido divulgar valores publicamente. Para saber o valor da sessão, entre em contato diretamente comigo. Trabalho com pagamento por sessão ou mensal, via Pix ou transferência bancária. É emitido recibo que pode ser usado para deduções no imposto de renda e reembolso no convênio.",
+  },
+];
+
+const FAQSection = () => (
+  <section id="faq" className="py-14 lg:py-24 bg-card/30">
+    <div className="max-w-6xl mx-auto px-5 sm:px-6">
+      <div className="max-w-3xl mx-auto">
+        <p className="text-xs uppercase tracking-[0.25em] text-primary font-medium mb-5">Dúvidas Frequentes</p>
+        <h2 className="text-2xl md:text-4xl font-bold text-foreground mb-8 text-balance">
+          Perguntas frequentes
+        </h2>
+        <Accordion type="single" collapsible className="space-y-2">
+          {faqItems.map((item, i) => (
+            <AccordionItem key={i} value={`faq-${i}`} className="border border-border/50 rounded-xl px-5 bg-card/50">
+              <AccordionTrigger className="text-sm font-medium text-foreground hover:no-underline py-4">
+                {item.q}
+              </AccordionTrigger>
+              <AccordionContent className="text-sm text-muted-foreground pb-4 leading-relaxed">
+                {item.a}
+              </AccordionContent>
+            </AccordionItem>
+          ))}
+        </Accordion>
+      </div>
+    </div>
+  </section>
+);
+
 /* ── AGENDAR ── */
 const AgendarSection = () => {
   const [iframeLoaded, setIframeLoaded] = useState(false);
   const hasEmbed = Boolean(GOOGLE_APPOINTMENT_EMBED_URL);
 
   return (
-    <section id="agendar" className="py-14 lg:py-24 bg-card/30">
+    <section id="agendar" className="py-14 lg:py-24">
       <div className="max-w-4xl mx-auto px-5 sm:px-6">
         <p className="text-xs uppercase tracking-[0.25em] text-primary font-medium mb-5">Agendamento</p>
         <h2 className="text-2xl md:text-4xl font-bold text-foreground mb-3 text-balance">
@@ -256,7 +359,7 @@ const AgendarSection = () => {
 
 /* ── CONTATO ── */
 const ContatoSection = () => (
-<section id="contato" className="py-14 lg:py-24">
+  <section id="contato" className="py-14 lg:py-24 bg-card/30">
     <div className="max-w-6xl mx-auto px-5 sm:px-6">
       <div className="max-w-lg">
         <p className="text-xs uppercase tracking-[0.25em] text-primary font-medium mb-5">Contato</p>
@@ -321,12 +424,13 @@ const Index = () => {
       <main>
         <HeroSection />
         <SobreSection />
-        <ComoFuncionaSection />
+        <ServicosSection />
+        <AbordagemSection />
         <AtendimentoSection />
-        <LaudosSection />
         <AvaliacoesSection />
         <VideoSection />
         <BlogPreviewSection onSelectPost={setSelectedPost} />
+        <FAQSection />
         <AgendarSection />
         <ContatoSection />
       </main>

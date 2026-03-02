@@ -13,12 +13,13 @@ const InstagramIcon = ({ size = 12 }: { size?: number }) => (
 );
 
 const navLinks = [
-  { href: "#sobre", label: "Sobre" },
-  { href: "#como-funciona", label: "Como funciona" },
+  { href: "#sobre", label: "Sobre Mim" },
+  { href: "#servicos", label: "Serviços" },
+  { href: "#abordagem", label: "Abordagem" },
   { href: "#atendimento", label: "Atendimento" },
   { href: "#avaliacoes", label: "Avaliações" },
-  { href: "#video", label: "Vídeo" },
   { href: "#blog", label: "Blog" },
+  { href: "#faq", label: "Dúvidas" },
   { href: "#agendar", label: "Agendar" },
   { href: "#contato", label: "Contato" },
 ];
