@@ -6,13 +6,12 @@ import CTAButton from "@/components/CTAButton";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import BlogCard from "@/components/BlogCard";
 import BlogModal from "@/components/BlogModal";
-import { Skeleton } from "@/components/ui/skeleton";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
-import { EMAIL_PLACEHOLDER, WHATSAPP_URL, GOOGLE_APPOINTMENT_EMBED_URL, GOOGLE_APPOINTMENT_DIRECT_URL, CRP, INSTAGRAM_URL, INSTAGRAM_HANDLE } from "@/config";
+import { EMAIL_PLACEHOLDER, WHATSAPP_URL, CRP, INSTAGRAM_URL, INSTAGRAM_HANDLE } from "@/config";
 import { posts as staticPosts, type Post } from "@/data/posts";
 import { fetchPublishedPosts, type DbPost } from "@/hooks/usePosts";
 import {
-  Clock, Home, MapPin, Monitor, ShieldCheck, Mail, MessageCircle, FileText, ExternalLink,
+  Clock, Home, MapPin, Monitor, ShieldCheck, Mail, MessageCircle,
   Users, BookOpen, Brain, Briefcase, Scale, ClipboardCheck, Stethoscope, HeartHandshake,
 } from "lucide-react";
 
@@ -295,67 +294,29 @@ const FAQSection = () => (
 );
 
 /* ── AGENDAR ── */
-const AgendarSection = () => {
-  const [iframeLoaded, setIframeLoaded] = useState(false);
-  const hasEmbed = Boolean(GOOGLE_APPOINTMENT_EMBED_URL);
+const AgendarSection = () => (
+  <section id="agendar" className="py-14 lg:py-24">
+    <div className="max-w-4xl mx-auto px-5 sm:px-6 text-center">
+      <p className="text-xs uppercase tracking-[0.25em] text-primary font-medium mb-5">Agendamento</p>
+      <h2 className="text-2xl md:text-4xl font-bold text-foreground mb-3 text-balance">
+        Agende sua sessão
+      </h2>
+      <p className="text-muted-foreground text-base leading-relaxed mb-10 max-w-lg mx-auto">
+        Para agendar, fale comigo diretamente pelo WhatsApp. Respondo com as opções de horários disponíveis.
+      </p>
 
-  return (
-    <section id="agendar" className="py-14 lg:py-24">
-      <div className="max-w-4xl mx-auto px-5 sm:px-6">
-        <p className="text-xs uppercase tracking-[0.25em] text-primary font-medium mb-5">Agendamento</p>
-        <h2 className="text-2xl md:text-4xl font-bold text-foreground mb-3 text-balance">
-          Agende sua sessão online
-        </h2>
-        <p className="text-muted-foreground text-base leading-relaxed mb-10 max-w-lg">
-          Escolha um horário disponível e finalize o agendamento.
-        </p>
-
-        {hasEmbed ? (
-          <div className="mb-10">
-            {!iframeLoaded && <Skeleton className="w-full h-[600px] md:h-[700px] rounded-2xl" />}
-            <div className={`rounded-2xl border border-border/50 overflow-hidden transition-opacity duration-300 ${iframeLoaded ? "opacity-100" : "opacity-0 h-0"}`}>
-              <iframe
-                src={GOOGLE_APPOINTMENT_EMBED_URL}
-                title="Agendamento online — Bruno Severino Rocha"
-                width="100%"
-                height="700"
-                className="block"
-                style={{ border: 0 }}
-                onLoad={() => setIframeLoaded(true)}
-                allowFullScreen
-              />
-            </div>
-            {GOOGLE_APPOINTMENT_DIRECT_URL && (
-              <div className="mt-4 text-center">
-                <a href={GOOGLE_APPOINTMENT_DIRECT_URL} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors underline underline-offset-2">
-                  <ExternalLink size={14} />
-                  Abrir agendamento em nova aba
-                </a>
-              </div>
-            )}
-          </div>
-        ) : (
-          <div className="mb-10 rounded-2xl border border-border/50 bg-card/50 p-10 text-center max-w-lg mx-auto">
-            <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center mx-auto mb-5 text-primary">
-              <Clock size={22} />
-            </div>
-            <h3 className="font-medium text-foreground text-lg mb-2">Agendamento em configuração</h3>
-            <p className="text-muted-foreground text-sm leading-relaxed mb-6">
-              A agenda online estará disponível em breve. Por enquanto, agende diretamente pelo WhatsApp.
-            </p>
-            <WhatsAppButton variant="primary" size="md" label="Agendar pelo WhatsApp" />
-          </div>
-        )}
-
-        <div className="flex flex-wrap gap-6 text-sm text-muted-foreground justify-center">
-          <span className="flex items-center gap-2"><Monitor size={15} className="text-primary" /> Atendimento 100% online</span>
-          <span className="flex items-center gap-2"><Clock size={15} className="text-primary" /> Seg–Sáb, hora marcada</span>
-          <span className="flex items-center gap-2"><ShieldCheck size={15} className="text-primary" /> Sigilo garantido</span>
-        </div>
+      <div className="mb-10">
+        <WhatsAppButton variant="primary" size="lg" label="Agendar pelo WhatsApp" />
       </div>
-    </section>
-  );
-};
+
+      <div className="flex flex-wrap gap-6 text-sm text-muted-foreground justify-center">
+        <span className="flex items-center gap-2"><Monitor size={15} className="text-primary" /> Online</span>
+        <span className="flex items-center gap-2"><Clock size={15} className="text-primary" /> Seg–Sáb</span>
+        <span className="flex items-center gap-2"><ShieldCheck size={15} className="text-primary" /> Hora marcada</span>
+      </div>
+    </div>
+  </section>
+);
 
 /* ── CONTATO ── */
 const ContatoSection = () => (
