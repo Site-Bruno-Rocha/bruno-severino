@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
-import { Menu, X, Mail, MessageCircle } from "lucide-react";
+import { Menu, X, Mail, MessageCircle, ChevronDown } from "lucide-react";
 import CTAButton from "./CTAButton";
 import { EMAIL_PLACEHOLDER, WHATSAPP_URL, CRP, INSTAGRAM_URL } from "@/config";
 
@@ -12,7 +12,8 @@ const InstagramIcon = ({ size = 12 }: { size?: number }) => (
   </svg>
 );
 
-const navLinks = [
+/* ── Mobile nav (drawer) ── */
+const mobileNavLinks = [
   { href: "#sobre", label: "Sobre Mim" },
   { href: "#servicos", label: "Serviços" },
   { href: "#abordagem", label: "Abordagem" },
@@ -24,6 +25,124 @@ const navLinks = [
   { href: "#contato", label: "Contato" },
 ];
 
+/* ── Desktop grouped nav ── */
+interface DropdownItem {
+  href: string;
+  label: string;
+}
+
+interface NavGroup {
+  label: string;
+  items: DropdownItem[];
+}
+
+interface NavDirect {
+  href: string;
+  label: string;
+}
+
+type DesktopNavEntry = NavGroup | NavDirect;
+
+const isGroup = (entry: DesktopNavEntry): entry is NavGroup => "items" in entry;
+
+const desktopNav: DesktopNavEntry[] = [
+  {
+    label: "Sobre",
+    items: [
+      { href: "#sobre", label: "Sobre Mim" },
+      { href: "#servicos", label: "Serviços" },
+      { href: "#abordagem", label: "Abordagem" },
+    ],
+  },
+  { href: "#atendimento", label: "Atendimento" },
+  {
+    label: "Conteúdo",
+    items: [
+      { href: "#avaliacoes", label: "Avaliações" },
+      { href: "#blog", label: "Blog" },
+      { href: "#faq", label: "Dúvidas" },
+    ],
+  },
+  { href: "#contato", label: "Contato" },
+];
+
+/* ── Dropdown component ── */
+const NavDropdown = ({ group, scrolled }: { group: NavGroup; scrolled: boolean }) => {
+  const [open, setOpen] = useState(false);
+  const timeout = useRef<ReturnType<typeof setTimeout>>();
+  const ref = useRef<HTMLDivElement>(null);
+
+  const enter = () => {
+    clearTimeout(timeout.current);
+    setOpen(true);
+  };
+  const leave = () => {
+    timeout.current = setTimeout(() => setOpen(false), 150);
+  };
+
+  // Close on outside click
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    };
+    if (open) document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, [open]);
+
+  // Keyboard
+  const onKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === "Escape") setOpen(false);
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      setOpen((o) => !o);
+    }
+  };
+
+  return (
+    <div
+      ref={ref}
+      className="relative"
+      onMouseEnter={enter}
+      onMouseLeave={leave}
+    >
+      <button
+        onClick={() => setOpen((o) => !o)}
+        onKeyDown={onKeyDown}
+        aria-expanded={open}
+        aria-haspopup="true"
+        className="flex items-center gap-1 whitespace-nowrap text-sm text-muted-foreground hover:text-foreground transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded px-2 py-1"
+      >
+        {group.label}
+        <ChevronDown
+          size={14}
+          className={`opacity-60 transition-transform duration-200 ${open ? "rotate-180" : ""}`}
+        />
+      </button>
+
+      {/* Dropdown panel */}
+      <div
+        className={`absolute top-full left-1/2 -translate-x-1/2 pt-2 transition-all duration-200 ${
+          open ? "opacity-100 translate-y-0 pointer-events-auto" : "opacity-0 -translate-y-1 pointer-events-none"
+        }`}
+      >
+        <div className="min-w-[180px] rounded-xl border border-border/50 bg-card shadow-xl shadow-black/40 py-1.5">
+          {group.items.map((item) => (
+            <a
+              key={item.href}
+              href={item.href}
+              onClick={() => setOpen(false)}
+              className="block px-4 py-2.5 text-sm text-muted-foreground hover:text-foreground hover:bg-accent/60 transition-colors duration-150 whitespace-nowrap focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-inset"
+            >
+              {item.label}
+            </a>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+/* ── Header ── */
 const Header = () => {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -34,7 +153,7 @@ const Header = () => {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Lock body scroll when menu is open
+  // Lock body scroll when mobile menu is open
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
@@ -44,7 +163,7 @@ const Header = () => {
 
   return (
     <>
-      {/* Contact pill — top bar */}
+      {/* Contact pill — top bar (desktop only) */}
       <div className={`hidden lg:block fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${scrolled ? "h-0 opacity-0 pointer-events-none" : "h-8"}`}>
         <div className="h-full bg-secondary/80 backdrop-blur-sm border-b border-border/40">
           <div className="max-w-6xl mx-auto px-6 h-full flex items-center justify-between text-xs text-muted-foreground">
@@ -71,8 +190,8 @@ const Header = () => {
       <header
         className={`fixed left-0 right-0 z-40 transition-all duration-300 border-b border-border/30 ${
           scrolled
-            ? "top-0 bg-background/90 backdrop-blur-md h-16 lg:h-20"
-            : "top-0 lg:top-8 bg-background backdrop-blur-none lg:bg-background/70 lg:backdrop-blur-sm h-16 lg:h-[5.5rem]"
+            ? "top-0 bg-background/90 backdrop-blur-md h-16 lg:h-16"
+            : "top-0 lg:top-8 bg-background backdrop-blur-none lg:bg-background/70 lg:backdrop-blur-sm h-16 lg:h-16"
         }`}
       >
         <div className="max-w-6xl mx-auto px-6 h-full flex items-center justify-between">
@@ -82,35 +201,39 @@ const Header = () => {
             className="flex items-center gap-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded shrink-0"
             aria-label="Bruno Rocha • Psicólogo (Psicanálise)"
           >
-          {/* Logo completo em todos os breakpoints */}
             <img
               src="/images/logo-bruno-rocha.png"
               alt="Bruno Rocha • Psicólogo (Psicanálise)"
-              className={`transition-all duration-300 flex-shrink-0 ${scrolled ? "h-9 lg:h-14" : "h-10 lg:h-16"}`}
+              className={`transition-all duration-300 flex-shrink-0 ${scrolled ? "h-9 lg:h-10" : "h-10 lg:h-11"}`}
             />
-            {/* CRP — desktop inline */}
-            <span className="hidden lg:inline text-[11px] text-muted-foreground/70 font-medium tracking-wide">
+            <span className="hidden lg:inline text-[11px] text-muted-foreground/70 font-medium tracking-wide whitespace-nowrap">
               CRP {CRP}
             </span>
           </a>
 
-          {/* Desktop nav */}
-          <nav className="hidden lg:flex items-center gap-6" aria-label="Navegação principal">
-            {navLinks.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                className="text-sm text-muted-foreground hover:text-foreground transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded px-1"
-              >
-                {link.label}
-              </a>
-            ))}
-            <CTAButton href="#agendar" size="sm">
-              Agendar sessão
-            </CTAButton>
+          {/* Desktop nav — grouped */}
+          <nav className="hidden lg:flex items-center gap-1" aria-label="Navegação principal">
+            {desktopNav.map((entry, i) =>
+              isGroup(entry) ? (
+                <NavDropdown key={entry.label} group={entry} scrolled={scrolled} />
+              ) : (
+                <a
+                  key={entry.href}
+                  href={entry.href}
+                  className="whitespace-nowrap text-sm text-muted-foreground hover:text-foreground transition-colors duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring rounded px-2 py-1"
+                >
+                  {entry.label}
+                </a>
+              )
+            )}
+            <div className="ml-3">
+              <CTAButton href="#agendar" size="sm">
+                Agendar sessão
+              </CTAButton>
+            </div>
           </nav>
 
-          {/* Mobile: CRP + hamburger */}
+          {/* Mobile: hamburger */}
           <div className="flex lg:hidden items-center gap-2">
             <button
               className="p-2.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-accent/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring transition-colors"
@@ -124,7 +247,7 @@ const Header = () => {
         </div>
       </header>
 
-      {/* Mobile menu — rendered via portal to avoid header's stacking context */}
+      {/* Mobile menu — portal */}
       {createPortal(
         <div
           className={`lg:hidden fixed inset-0 z-[9999] transition-all duration-300 ${
@@ -159,7 +282,7 @@ const Header = () => {
               </button>
             </div>
             <nav className="px-4 py-5 flex flex-col gap-0.5 overflow-y-auto" aria-label="Menu mobile">
-              {navLinks.map((link) => (
+              {mobileNavLinks.map((link) => (
                 <a
                   key={link.href}
                   href={link.href}
