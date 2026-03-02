@@ -1,10 +1,5 @@
 import { Star } from "lucide-react";
-
-/**
- * Seção de Avaliações — placeholder
- * TODO: Integrar com Google Reviews API ou widget quando disponível.
- * Os dados abaixo são mock e devem ser substituídos por dados reais.
- */
+import { useScrollReveal, useStaggerReveal } from "@/hooks/useScrollReveal";
 
 const mockReviews = [
   { initials: "M. A.", text: "O atendimento do Bruno é muito acolhedor. Me senti à vontade desde a primeira sessão. Recomendo de olhos fechados." },
@@ -23,33 +18,41 @@ const Stars = () => (
   </div>
 );
 
-const AvaliacoesSection = () => (
-<section id="avaliacoes" className="py-14 lg:py-24">
-    <div className="max-w-6xl mx-auto px-5 sm:px-6">
-      <p className="text-xs uppercase tracking-[0.25em] text-primary font-medium mb-5">Avaliações</p>
-      <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4 text-balance">
-        O que dizem os pacientes
-      </h2>
-      <p className="text-muted-foreground mb-12 max-w-lg">
-        Avaliações do Google <span className="text-muted-foreground/50">(integração em breve)</span>
-      </p>
+const AvaliacoesSection = () => {
+  const titleRef = useScrollReveal();
+  const cardsRef = useStaggerReveal();
 
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
-        {mockReviews.map((review) => (
-          <div
-            key={review.initials}
-            className="rounded-2xl border border-border/50 bg-card/50 p-6 hover:bg-card transition-colors duration-200"
-          >
-            <Stars />
-            <p className="text-sm text-muted-foreground leading-relaxed mt-4 mb-4">
-              "{review.text}"
-            </p>
-            <p className="text-xs font-medium text-foreground/70">{review.initials}</p>
-          </div>
-        ))}
+  return (
+    <section id="avaliacoes" className="py-14 lg:py-24">
+      <div className="max-w-6xl mx-auto px-5 sm:px-6">
+        <div ref={titleRef} data-reveal>
+          <p className="text-xs uppercase tracking-[0.25em] text-primary font-medium mb-5">Avaliações</p>
+          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4 text-balance">
+            O que dizem os pacientes
+          </h2>
+          <p className="text-muted-foreground mb-12 max-w-lg">
+            Avaliações do Google <span className="text-muted-foreground/50">(integração em breve)</span>
+          </p>
+        </div>
+
+        <div ref={cardsRef} className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+          {mockReviews.map((review) => (
+            <div
+              key={review.initials}
+              data-reveal-child
+              className="rounded-2xl border border-border/50 bg-card/50 p-6 hover-lift"
+            >
+              <Stars />
+              <p className="text-sm text-muted-foreground leading-relaxed mt-4 mb-4">
+                "{review.text}"
+              </p>
+              <p className="text-xs font-medium text-foreground/70">{review.initials}</p>
+            </div>
+          ))}
+        </div>
       </div>
-    </div>
-  </section>
-);
+    </section>
+  );
+};
 
 export default AvaliacoesSection;

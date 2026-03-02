@@ -89,3 +89,65 @@
 [id] {
   scroll-margin-top: 7rem;
 }
+
+/* ── Scroll Reveal ── */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+[data-reveal][data-revealed="true"] {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+[data-reveal-child] {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+[data-reveal-child][data-revealed="true"] {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal],
+  [data-reveal-child] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+/* ── Hover lift for cards ── */
+.hover-lift {
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+.hover-lift:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px -8px hsl(var(--primary) / 0.15);
+  border-color: hsl(var(--border));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hover-lift:hover {
+    transform: none;
+  }
+}
+
+/* ── Mobile accordion centering ── */
+@media (max-width: 767px) {
+  .accordion-mobile-center [data-radix-collection-item] button {
+    justify-content: center;
+    text-align: center;
+  }
+  .accordion-mobile-center [data-radix-collection-item] button > span {
+    justify-content: center;
+    text-align: center;
+  }
+  .accordion-mobile-center [role="region"] > div {
+    text-align: center;
+  }
+}
