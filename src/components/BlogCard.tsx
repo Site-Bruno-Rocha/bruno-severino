@@ -9,7 +9,7 @@ interface BlogCardProps {
 const BlogCard = ({ post, onClick }: BlogCardProps) => {
   return (
     <article
-      className="group border border-border/50 rounded-2xl bg-card/50 p-6 hover:bg-card hover:border-border transition-all duration-200 cursor-pointer"
+      className="group border border-border/50 rounded-2xl bg-card/50 p-6 hover:bg-card hover-lift cursor-pointer"
       onClick={onClick}
       role="button"
       tabIndex={0}
