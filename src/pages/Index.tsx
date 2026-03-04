@@ -224,19 +224,21 @@ function dbPostToPost(db: DbPost): Post {
 
 /* ── BLOG PREVIEW ── */
 const BlogPreviewSection = ({ onSelectPost }: { onSelectPost: (post: Post) => void }) => {
-  const [displayPosts, setDisplayPosts] = useState<Post[]>(staticPosts.slice(0, 3));
+  const [displayPosts, setDisplayPosts] = useState<Post[]>([]);
+  const [loading, setLoading] = useState(true);
   const ref = useScrollReveal();
   const cardsRef = useStaggerReveal();
 
   useEffect(() => {
     fetchPublishedPosts()
       .then((dbPosts) => {
-        if (dbPosts.length > 0) {
-          setDisplayPosts(dbPosts.slice(0, 3).map(dbPostToPost));
-        }
+        setDisplayPosts(dbPosts.slice(0, 3).map(dbPostToPost));
       })
-      .catch(() => {});
+      .catch(() => {})
+      .finally(() => setLoading(false));
   }, []);
+
+  if (!loading && displayPosts.length === 0) return null;
 
   return (
     <section id="blog" className="py-14 lg:py-24">
@@ -248,13 +250,19 @@ const BlogPreviewSection = ({ onSelectPost }: { onSelectPost: (post: Post) => vo
           </h2>
           <p className="text-muted-foreground mb-8 lg:mb-12 max-w-lg">Textos curtos sobre psicanálise, emoções e autoconhecimento.</p>
         </div>
-        <div ref={cardsRef} className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
-          {displayPosts.map((post) => (
-            <div key={post.slug} data-reveal-child>
-              <BlogCard post={post} onClick={() => onSelectPost(post)} />
-            </div>
-          ))}
-        </div>
+        {loading ? (
+          <div className="flex justify-center py-12">
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
+          </div>
+        ) : (
+          <div ref={cardsRef} className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+            {displayPosts.map((post) => (
+              <div key={post.slug} data-reveal-child>
+                <BlogCard post={post} onClick={() => onSelectPost(post)} />
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </section>
   );
