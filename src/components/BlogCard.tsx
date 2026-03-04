@@ -9,12 +9,8 @@ interface BlogCardProps {
 const BlogCard = ({ post, onClick }: BlogCardProps) => {
   return (
     <article
-      className="group border border-border/50 rounded-2xl bg-card/50 p-6 hover:bg-card hover-lift cursor-pointer flex flex-col"
-      onClick={onClick}
-      role="button"
-      tabIndex={0}
-      onKeyDown={(e) => e.key === "Enter" && onClick?.()}
-      aria-label={`Leia o artigo: ${post.title}`}
+      className="group border border-border/50 rounded-2xl bg-card/50 p-6 hover:bg-card hover-lift flex flex-col"
+      aria-label={post.title}
     >
       <div className="flex items-center justify-between mb-3">
         <Badge variant="secondary" className="text-xs font-normal px-2.5 py-1 rounded-lg">
@@ -34,9 +30,12 @@ const BlogCard = ({ post, onClick }: BlogCardProps) => {
       </p>
 
       <div className="mt-auto pt-2 flex justify-center">
-        <span className="inline-flex items-center justify-center rounded-xl bg-primary text-primary-foreground text-sm font-medium px-5 py-2.5 min-h-[44px] transition-all duration-200 hover:bg-primary/85 hover:shadow-md hover:shadow-primary/30 active:scale-[0.98]">
+        <button
+          onClick={onClick}
+          className="inline-flex items-center justify-center rounded-xl bg-primary text-primary-foreground text-sm font-medium px-5 py-2.5 min-h-[44px] transition-all duration-200 hover:bg-primary/85 hover:shadow-md hover:shadow-primary/30 active:scale-[0.98] cursor-pointer"
+        >
           Ler Artigo
-        </span>
+        </button>
       </div>
     </article>
   );
