@@ -8,7 +8,7 @@ import BlogCard from "@/components/BlogCard";
 import BlogModal from "@/components/BlogModal";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { EMAIL_PLACEHOLDER, WHATSAPP_URL, CRP, INSTAGRAM_URL, INSTAGRAM_HANDLE } from "@/config";
-import { posts as staticPosts, type Post } from "@/data/posts";
+import { type Post } from "@/data/posts";
 import { fetchPublishedPosts, type DbPost } from "@/hooks/usePosts";
 import { useScrollReveal, useStaggerReveal } from "@/hooks/useScrollReveal";
 import {
