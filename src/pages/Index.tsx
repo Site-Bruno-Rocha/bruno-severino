@@ -218,7 +218,6 @@ const BlogPreviewSection = ({ onSelectPost }: { onSelectPost: (postId: string) =
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const ref = useScrollReveal();
-  const cardsRef = useStaggerReveal();
 
   const loadPublishedPosts = useCallback(async (showLoader = false) => {
     if (showLoader) setLoading(true);
@@ -274,9 +273,9 @@ const BlogPreviewSection = ({ onSelectPost }: { onSelectPost: (postId: string) =
         ) : displayPosts.length === 0 ? (
           <p className="text-center text-muted-foreground py-8">Nenhum artigo publicado ainda.</p>
         ) : (
-          <div ref={cardsRef} className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
             {displayPosts.map((post) => (
-              <div key={post.id} data-reveal-child>
+              <div key={post.id}>
                 <BlogCard post={post} onClick={() => onSelectPost(post.id)} />
               </div>
             ))}
