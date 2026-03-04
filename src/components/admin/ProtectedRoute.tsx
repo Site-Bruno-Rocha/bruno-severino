@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { LogOut } from "lucide-react";
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
-  const { user, isAdmin, loading, signOut, adminDebug } = useAuth();
+  const { user, isAdmin, loading, signOut } = useAuth();
 
   if (loading) {
     return (
@@ -32,15 +32,6 @@ const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
           <a href="/" className="block text-xs text-muted-foreground hover:text-foreground transition-colors">
             ← Voltar ao site
           </a>
-
-          {import.meta.env.DEV && (
-            <div className="rounded-md border border-border bg-muted/40 p-3 text-left">
-              <p className="text-xs font-medium text-foreground mb-2">Diagnóstico DEV</p>
-              <pre className="text-[11px] leading-4 text-muted-foreground whitespace-pre-wrap break-all">
-                {JSON.stringify(adminDebug, null, 2)}
-              </pre>
-            </div>
-          )}
         </div>
       </div>
     );
