@@ -2,30 +2,18 @@ import { useState, useEffect, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import type { User, Session } from "@supabase/supabase-js";
 
-const ALLOWED_ADMIN_EMAILS = ["brunorocha.psicologo@gmail.com"];
-
 type AdminDebugState = {
   userEmail: string | null;
   userId: string | null;
-  supabaseUrl: string;
-  projectId: string;
-  emailAllowed: boolean | null;
   rpcResult: boolean | null;
   rpcError: string | null;
-  roleRow: { role: string; user_id: string } | null;
-  roleError: string | null;
 };
 
 const EMPTY_ADMIN_DEBUG: AdminDebugState = {
   userEmail: null,
   userId: null,
-  supabaseUrl: import.meta.env.VITE_SUPABASE_URL ?? "",
-  projectId: import.meta.env.VITE_SUPABASE_PROJECT_ID ?? "",
-  emailAllowed: null,
   rpcResult: null,
   rpcError: null,
-  roleRow: null,
-  roleError: null,
 };
 
 export function useAuth() {
