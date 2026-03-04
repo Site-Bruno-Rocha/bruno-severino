@@ -232,9 +232,10 @@ const BlogPreviewSection = ({ onSelectPost }: { onSelectPost: (post: Post) => vo
   useEffect(() => {
     fetchPublishedPosts()
       .then((dbPosts) => {
+        console.log("Blog posts fetched:", dbPosts.length);
         setDisplayPosts(dbPosts.slice(0, 3).map(dbPostToPost));
       })
-      .catch(() => {})
+      .catch((err) => console.error("Error fetching posts:", err))
       .finally(() => setLoading(false));
   }, []);
 
