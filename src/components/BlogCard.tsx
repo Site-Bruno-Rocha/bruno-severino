@@ -1,10 +1,31 @@
-import { formatDate, type Post } from "@/data/posts";
 import { Badge } from "@/components/ui/badge";
+import type { DbPost } from "@/hooks/usePosts";
+
+type LegacyPost = {
+  title: string;
+  excerpt: string;
+  category: string;
+  date: string;
+};
+
+type BlogCardPost = DbPost | LegacyPost;
 
 interface BlogCardProps {
-  post: Post;
+  post: BlogCardPost;
   onClick?: () => void;
 }
+
+const getPostDate = (post: BlogCardPost) => {
+  if ("date" in post) return post.date;
+  return (post.published_at ?? post.created_at).slice(0, 10);
+};
+
+const formatPostDate = (post: BlogCardPost) =>
+  new Date(getPostDate(post)).toLocaleDateString("pt-BR", {
+    day: "2-digit",
+    month: "long",
+    year: "numeric",
+  });
 
 const BlogCard = ({ post, onClick }: BlogCardProps) => {
   return (
@@ -12,12 +33,12 @@ const BlogCard = ({ post, onClick }: BlogCardProps) => {
       className="group border border-border/50 rounded-2xl bg-card/50 p-6 hover:bg-card hover-lift flex flex-col"
       aria-label={post.title}
     >
-      <div className="flex items-center justify-between mb-3">
+      <div className="flex items-center justify-between mb-3 gap-3">
         <Badge variant="secondary" className="text-xs font-normal px-2.5 py-1 rounded-lg">
           {post.category}
         </Badge>
-        <time dateTime={post.date} className="text-xs text-muted-foreground">
-          {formatDate(post.date)}
+        <time dateTime={getPostDate(post)} className="text-xs text-muted-foreground text-right">
+          {formatPostDate(post)}
         </time>
       </div>
 
@@ -25,9 +46,7 @@ const BlogCard = ({ post, onClick }: BlogCardProps) => {
         {post.title}
       </h3>
 
-      <p className="text-sm text-muted-foreground leading-relaxed line-clamp-2 mb-4">
-        {post.excerpt}
-      </p>
+      <p className="text-sm text-muted-foreground leading-relaxed line-clamp-2 mb-4">{post.excerpt}</p>
 
       <div className="mt-auto pt-2 flex justify-center">
         <button
@@ -42,3 +61,4 @@ const BlogCard = ({ post, onClick }: BlogCardProps) => {
 };
 
 export default BlogCard;
+

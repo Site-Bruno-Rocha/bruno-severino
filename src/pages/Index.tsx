@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import FloatingWhatsApp from "@/components/FloatingWhatsApp";
@@ -7,10 +7,12 @@ import WhatsAppButton from "@/components/WhatsAppButton";
 import BlogCard from "@/components/BlogCard";
 import BlogModal from "@/components/BlogModal";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { Skeleton } from "@/components/ui/skeleton";
 import { EMAIL_PLACEHOLDER, WHATSAPP_URL, CRP, INSTAGRAM_URL, INSTAGRAM_HANDLE } from "@/config";
-import { type Post } from "@/data/posts";
 import { fetchPublishedPosts, type DbPost } from "@/hooks/usePosts";
+import { supabase } from "@/integrations/supabase/client";
 import { useScrollReveal, useStaggerReveal } from "@/hooks/useScrollReveal";
+
 import {
   Clock, Home, MapPin, Monitor, ShieldCheck, Mail, MessageCircle,
   Users, BookOpen, Brain, Briefcase, Scale, ClipboardCheck, Stethoscope, HeartHandshake,
@@ -210,56 +212,72 @@ const AtendimentoSection = () => {
   );
 };
 
-/* ── helpers ── */
-function dbPostToPost(db: DbPost): Post {
-  return {
-    slug: db.slug,
-    title: db.title,
-    date: db.created_at.slice(0, 10),
-    excerpt: db.excerpt,
-    category: db.category,
-    content: db.content,
-  };
-}
-
 /* ── BLOG PREVIEW ── */
-const BlogPreviewSection = ({ onSelectPost }: { onSelectPost: (post: Post) => void }) => {
-  const [displayPosts, setDisplayPosts] = useState<Post[]>([]);
+const BlogPreviewSection = ({ onSelectPost }: { onSelectPost: (postId: string) => void }) => {
+  const [displayPosts, setDisplayPosts] = useState<DbPost[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const ref = useScrollReveal();
   const cardsRef = useStaggerReveal();
 
-  useEffect(() => {
-    fetchPublishedPosts()
-      .then((dbPosts) => {
-        console.log("Blog posts fetched:", dbPosts.length);
-        setDisplayPosts(dbPosts.slice(0, 3).map(dbPostToPost));
-      })
-      .catch((err) => console.error("Error fetching posts:", err))
-      .finally(() => setLoading(false));
+  const loadPublishedPosts = useCallback(async (showLoader = false) => {
+    if (showLoader) setLoading(true);
+    try {
+      const dbPosts = await fetchPublishedPosts(6);
+      setDisplayPosts(dbPosts);
+      setError(null);
+    } catch {
+      setError("Não foi possível carregar os artigos agora.");
+      setDisplayPosts([]);
+    } finally {
+      setLoading(false);
+    }
   }, []);
+
+  useEffect(() => {
+    loadPublishedPosts(true);
+
+    const channel = supabase
+      .channel("public-blog-posts")
+      .on("postgres_changes", { event: "*", schema: "public", table: "posts" }, () => {
+        loadPublishedPosts(false);
+      })
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [loadPublishedPosts]);
 
   return (
     <section id="blog" className="py-14 lg:py-24">
       <div className="max-w-6xl mx-auto px-5 sm:px-6">
         <div ref={ref} data-reveal>
           <p className="text-xs uppercase tracking-[0.25em] text-primary font-medium mb-5">Blog</p>
-          <h2 className="text-2xl md:text-4xl font-bold text-foreground mb-4 text-balance">
-            Reflexões sobre saúde mental
-          </h2>
+          <h2 className="text-2xl md:text-4xl font-bold text-foreground mb-4 text-balance">Reflexões sobre saúde mental</h2>
           <p className="text-muted-foreground mb-8 lg:mb-12 max-w-lg">Textos curtos sobre psicanálise, emoções e autoconhecimento.</p>
         </div>
+
         {loading ? (
-          <div className="flex justify-center py-12">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
+            {[0, 1, 2].map((item) => (
+              <div key={item} className="rounded-2xl border border-border/50 bg-card/50 p-6 space-y-3">
+                <Skeleton className="h-5 w-24" />
+                <Skeleton className="h-6 w-full" />
+                <Skeleton className="h-4 w-5/6" />
+                <Skeleton className="h-10 w-32 mx-auto mt-4" />
+              </div>
+            ))}
           </div>
+        ) : error ? (
+          <p className="text-center text-muted-foreground py-8">{error}</p>
         ) : displayPosts.length === 0 ? (
           <p className="text-center text-muted-foreground py-8">Nenhum artigo publicado ainda.</p>
         ) : (
           <div ref={cardsRef} className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
             {displayPosts.map((post) => (
-              <div key={post.slug} data-reveal-child>
-                <BlogCard post={post} onClick={() => onSelectPost(post)} />
+              <div key={post.id} data-reveal-child>
+                <BlogCard post={post} onClick={() => onSelectPost(post.id)} />
               </div>
             ))}
           </div>
@@ -268,6 +286,7 @@ const BlogPreviewSection = ({ onSelectPost }: { onSelectPost: (post: Post) => vo
     </section>
   );
 };
+
 
 /* ── DÚVIDAS FREQUENTES ── */
 const faqItems = [
@@ -406,7 +425,7 @@ const ContatoSection = () => {
 
 /* ── PAGE ── */
 const Index = () => {
-  const [selectedPost, setSelectedPost] = useState<Post | null>(null);
+  const [selectedPostId, setSelectedPostId] = useState<string | null>(null);
 
   useEffect(() => {
     document.title = "Bruno Severino Rocha | Psicólogo Online — Psicanálise";
@@ -432,16 +451,17 @@ const Index = () => {
         <AtendimentoSection />
         <AvaliacoesSection />
         <VideoSection />
-        <BlogPreviewSection onSelectPost={setSelectedPost} />
+        <BlogPreviewSection onSelectPost={setSelectedPostId} />
         <FAQSection />
         <AgendarSection />
         <ContatoSection />
       </main>
       <Footer />
       <FloatingWhatsApp />
-      <BlogModal post={selectedPost} open={!!selectedPost} onClose={() => setSelectedPost(null)} />
+      <BlogModal postId={selectedPostId} open={!!selectedPostId} onClose={() => setSelectedPostId(null)} />
     </>
   );
 };
+
 
 export default Index;
