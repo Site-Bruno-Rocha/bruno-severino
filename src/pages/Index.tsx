@@ -177,7 +177,7 @@ const AbordagemSection = () => {
 /* ── ATENDIMENTO ── */
 const beneficios = [
   { icon: <Clock size={20} />, title: "Flexibilidade de horários", desc: "Sessões que se encaixam na sua rotina, sem deslocamento." },
-  { icon: <Home size={20} />, title: "Conforto da sua casa", desc: "Atenda do ambiente em que você se sente mais à vontade." },
+  { icon: <Home size={20} />, title: "Conforto da sua casa", desc: "Atendo no ambiente em que você se sente mais à vontade." },
   { icon: <MapPin size={20} />, title: "Acessibilidade", desc: "Sem barreiras geográficas. De qualquer lugar do Brasil." },
 ];
 
@@ -363,7 +363,7 @@ const ContatoSection = () => {
           <div className="space-y-4 mb-8">
             <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-sm text-muted-foreground hover:text-foreground transition-colors">
               <MessageCircle size={16} className="text-primary shrink-0" />
-              WhatsApp
+              (11) 95391-8737
             </a>
             <a href={`mailto:${EMAIL_PLACEHOLDER}`} className="flex items-center gap-3 text-sm text-muted-foreground hover:text-foreground transition-colors">
               <Mail size={16} className="text-primary shrink-0" />
