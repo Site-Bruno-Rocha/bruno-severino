@@ -1,4 +1,5 @@
-import { CheckCircle } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { CheckCircle, Volume2, VolumeX, Play } from "lucide-react";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 
@@ -10,6 +11,37 @@ const bullets = [
 
 const VideoSection = () => {
   const ref = useScrollReveal();
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [muted, setMuted] = useState(true);
+  const [needsTap, setNeedsTap] = useState(false);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (prefersReduced) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          video.play().catch(() => setNeedsTap(true));
+        } else {
+          video.pause();
+        }
+      },
+      { threshold: 0.4 }
+    );
+
+    observer.observe(video);
+    return () => observer.disconnect();
+  }, []);
+
+  const handleTap = () => {
+    const video = videoRef.current;
+    if (!video) return;
+    video.play().then(() => setNeedsTap(false)).catch(() => {});
+  };
 
   return (
     <section id="video" className="py-14 lg:py-24 bg-card/30">
@@ -35,22 +67,44 @@ const VideoSection = () => {
           {/* Right — vertical video with glow */}
           <div className="flex justify-center lg:justify-end">
             <div className="relative w-[260px] sm:w-[300px] lg:w-[340px]">
-              {/* Blue glow behind video — same style as Hero */}
-              <div
-                className="absolute inset-0 flex items-center justify-center pointer-events-none"
-                aria-hidden="true"
-              >
+              {/* Blue glow */}
+              <div className="absolute inset-0 flex items-center justify-center pointer-events-none" aria-hidden="true">
                 <div className="w-[90%] h-[90%] bg-primary/15 rounded-full blur-[80px] lg:blur-[100px]" />
               </div>
+
               <div className="relative rounded-2xl border border-border/50 bg-card/60 overflow-hidden shadow-lg hover-lift" style={{ aspectRatio: "9/16" }}>
                 <video
+                  ref={videoRef}
                   src="/videos/bruno-apresentacao.mp4"
-                  controls
+                  muted={muted}
+                  loop
                   playsInline
                   preload="metadata"
                   className="w-full h-full object-cover"
                   title="Vídeo de apresentação — Bruno Severino Rocha"
                 />
+
+                {/* Tap to play overlay */}
+                {needsTap && (
+                  <button
+                    onClick={handleTap}
+                    className="absolute inset-0 flex items-center justify-center bg-background/40 backdrop-blur-sm z-10"
+                    aria-label="Toque para reproduzir"
+                  >
+                    <div className="w-14 h-14 rounded-full bg-primary/90 flex items-center justify-center shadow-lg">
+                      <Play size={24} className="text-primary-foreground ml-0.5" />
+                    </div>
+                  </button>
+                )}
+
+                {/* Mute/unmute toggle */}
+                <button
+                  onClick={() => setMuted((m) => !m)}
+                  className="absolute bottom-3 right-3 z-20 w-11 h-11 rounded-full bg-background/60 backdrop-blur-sm border border-border/50 flex items-center justify-center text-foreground transition-colors hover:bg-background/80"
+                  aria-label={muted ? "Ativar som" : "Silenciar"}
+                >
+                  {muted ? <VolumeX size={18} /> : <Volume2 size={18} />}
+                </button>
               </div>
             </div>
           </div>
