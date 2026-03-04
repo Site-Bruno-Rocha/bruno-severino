@@ -113,25 +113,25 @@ const ServicosSection = () => {
   return (
     <section id="servicos" className="py-14 lg:py-24 bg-card/30">
       <div className="max-w-6xl mx-auto px-5 sm:px-6" ref={ref} data-reveal>
-        <p className="text-xs uppercase tracking-[0.25em] text-primary font-medium mb-5">Serviços Oferecidos</p>
-        <h2 className="text-2xl md:text-4xl font-bold text-foreground mb-4 text-balance">
+        <p className="text-xs uppercase tracking-[0.25em] text-primary font-medium mb-5 text-center md:text-left">Serviços Oferecidos</p>
+        <h2 className="text-2xl md:text-4xl font-bold text-foreground mb-4 text-balance text-center md:text-left">
           Como posso ajudar
         </h2>
-        <p className="text-muted-foreground mb-8 lg:mb-12 max-w-lg">
+        <p className="text-muted-foreground mb-8 lg:mb-12 max-w-lg text-center md:text-left mx-auto md:mx-0">
           Conheça os serviços que ofereço, sempre com ética, responsabilidade e alinhamento às normativas profissionais.
         </p>
-        <Accordion type="single" collapsible className="space-y-2 max-w-3xl accordion-mobile-center">
+        <Accordion type="single" collapsible className="space-y-2 max-w-3xl mx-auto md:mx-0 accordion-mobile-center">
           {servicos.map((s, i) => (
             <AccordionItem key={i} value={`servico-${i}`} className="border border-border/50 rounded-xl px-5 bg-card/50 hover-lift">
               <AccordionTrigger className="text-sm font-medium text-foreground hover:no-underline py-4">
-                <span className="flex items-center gap-3">
+                <span className="flex items-center gap-3 w-full md:w-auto justify-center md:justify-start">
                   <span className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center text-primary shrink-0 transition-transform duration-200 hover:scale-110">
                     {s.icon}
                   </span>
-                  {s.title}
+                  <span className="text-left md:text-left">{s.title}</span>
                 </span>
               </AccordionTrigger>
-              <AccordionContent className="text-sm text-muted-foreground pb-4 leading-relaxed pl-11 md:pl-11">
+              <AccordionContent className="text-sm text-muted-foreground pb-4 leading-relaxed pl-0 md:pl-11 text-center md:text-left">
                 {s.desc}
               </AccordionContent>
             </AccordionItem>
@@ -306,17 +306,17 @@ const FAQSection = () => {
     <section id="faq" className="py-14 lg:py-24 bg-card/30">
       <div className="max-w-6xl mx-auto px-5 sm:px-6">
         <div className="max-w-3xl mx-auto" ref={ref} data-reveal>
-          <p className="text-xs uppercase tracking-[0.25em] text-primary font-medium mb-5">Dúvidas Frequentes</p>
-          <h2 className="text-2xl md:text-4xl font-bold text-foreground mb-8 text-balance">
+          <p className="text-xs uppercase tracking-[0.25em] text-primary font-medium mb-5 text-center md:text-left">Dúvidas Frequentes</p>
+          <h2 className="text-2xl md:text-4xl font-bold text-foreground mb-8 text-balance text-center md:text-left">
             Perguntas frequentes
           </h2>
           <Accordion type="single" collapsible className="space-y-2 accordion-mobile-center">
             {faqItems.map((item, i) => (
               <AccordionItem key={i} value={`faq-${i}`} className="border border-border/50 rounded-xl px-5 bg-card/50 hover-lift">
-                <AccordionTrigger className="text-sm font-medium text-foreground hover:no-underline py-4">
-                  {item.q}
+                <AccordionTrigger className="text-sm font-medium text-foreground hover:no-underline py-4 text-center md:text-left">
+                  <span className="w-full text-center md:text-left">{item.q}</span>
                 </AccordionTrigger>
-                <AccordionContent className="text-sm text-muted-foreground pb-4 leading-relaxed">
+                <AccordionContent className="text-sm text-muted-foreground pb-4 leading-relaxed text-center md:text-left">
                   {item.a}
                 </AccordionContent>
               </AccordionItem>
