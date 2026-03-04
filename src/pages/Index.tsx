@@ -238,8 +238,6 @@ const BlogPreviewSection = ({ onSelectPost }: { onSelectPost: (post: Post) => vo
       .finally(() => setLoading(false));
   }, []);
 
-  if (!loading && displayPosts.length === 0) return null;
-
   return (
     <section id="blog" className="py-14 lg:py-24">
       <div className="max-w-6xl mx-auto px-5 sm:px-6">
@@ -254,6 +252,8 @@ const BlogPreviewSection = ({ onSelectPost }: { onSelectPost: (post: Post) => vo
           <div className="flex justify-center py-12">
             <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
           </div>
+        ) : displayPosts.length === 0 ? (
+          <p className="text-center text-muted-foreground py-8">Nenhum artigo publicado ainda.</p>
         ) : (
           <div ref={cardsRef} className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
             {displayPosts.map((post) => (

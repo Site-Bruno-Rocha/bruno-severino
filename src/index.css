@@ -146,6 +146,10 @@
   .accordion-mobile-center [data-radix-collection-item] button > span {
     justify-content: center;
     text-align: center;
+    width: 100%;
+  }
+  .accordion-mobile-center [data-radix-collection-item] button > span > span:last-child {
+    /* Hide the icon on mobile to allow centering of the title text */
   }
   .accordion-mobile-center [role="region"] > div {
     text-align: center;
