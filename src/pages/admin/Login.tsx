@@ -7,40 +7,13 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { LogIn, LogOut } from "lucide-react";
 
-type AdminDebugPanelProps = {
-  adminDebug: {
-    userEmail: string | null;
-    userId: string | null;
-    supabaseUrl: string;
-    projectId: string;
-    emailAllowed: boolean | null;
-    rpcResult: boolean | null;
-    rpcError: string | null;
-    roleRow: { role: string; user_id: string } | null;
-    roleError: string | null;
-  };
-};
-
-const AdminDebugPanel = ({ adminDebug }: AdminDebugPanelProps) => {
-  if (!import.meta.env.DEV) return null;
-
-  return (
-    <div className="mt-4 rounded-md border border-border bg-muted/40 p-3 text-left">
-      <p className="text-xs font-medium text-foreground mb-2">Diagnóstico DEV</p>
-      <pre className="text-[11px] leading-4 text-muted-foreground whitespace-pre-wrap break-all">
-        {JSON.stringify(adminDebug, null, 2)}
-      </pre>
-    </div>
-  );
-};
-
 const AdminLogin = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [deniedState, setDeniedState] = useState(false);
-  const { signIn, signOut, user, isAdmin, loading, checkAdmin, adminDebug } = useAuth();
+  const { signIn, signOut, user, isAdmin, loading, checkAdmin } = useAuth();
   const navigate = useNavigate();
 
   if (loading) {
@@ -78,7 +51,6 @@ const AdminLogin = () => {
           <a href="/" className="block text-xs text-muted-foreground hover:text-foreground transition-colors">
             ← Voltar ao site
           </a>
-          <AdminDebugPanel adminDebug={adminDebug} />
         </div>
       </div>
     );
@@ -152,7 +124,6 @@ const AdminLogin = () => {
           <a href="/" className="text-xs text-muted-foreground hover:text-foreground transition-colors">
             ← Voltar ao site
           </a>
-          <AdminDebugPanel adminDebug={adminDebug} />
         </div>
       </div>
     </div>

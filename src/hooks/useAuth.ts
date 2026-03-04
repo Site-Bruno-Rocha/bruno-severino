@@ -25,62 +25,38 @@ export function useAuth() {
 
   const checkAdmin = useCallback(async (authUser: User): Promise<boolean> => {
     const userEmail = authUser.email?.toLowerCase() ?? null;
-    const emailAllowed = !!userEmail && ALLOWED_ADMIN_EMAILS.includes(userEmail);
 
     let admin = false;
     let rpcResult: boolean | null = null;
     let rpcError: string | null = null;
-    let roleRow: { role: string; user_id: string } | null = null;
-    let roleError: string | null = null;
 
-    if (emailAllowed) {
-      try {
-        const { data: rpcData, error: rpcErr } = await supabase.rpc("has_role", {
-          _user_id: authUser.id,
-          _role: "admin",
-        });
+    try {
+      const { data: rpcData, error: rpcErr } = await supabase.rpc("has_role", {
+        _user_id: authUser.id,
+        _role: "admin",
+      });
 
-        rpcResult = rpcData === true;
-        rpcError = rpcErr?.message ?? null;
-        if (!rpcErr && rpcData === true) admin = true;
-      } catch (e) {
-        rpcError = e instanceof Error ? e.message : "Erro desconhecido na RPC has_role";
-      }
-
-      const { data: roleData, error: roleErr } = await supabase
-        .from("user_roles")
-        .select("role, user_id")
-        .eq("user_id", authUser.id)
-        .maybeSingle();
-
-      roleError = roleErr?.message ?? null;
-      roleRow = roleData ? { role: String(roleData.role), user_id: roleData.user_id } : null;
-      if (roleRow?.role === "admin") admin = true;
+      rpcResult = rpcData === true;
+      rpcError = rpcErr?.message ?? null;
+      if (!rpcErr && rpcData === true) admin = true;
+    } catch (e) {
+      rpcError = e instanceof Error ? e.message : "Erro desconhecido na RPC has_role";
     }
 
     const nextDebug: AdminDebugState = {
       userEmail,
       userId: authUser.id,
-      supabaseUrl: import.meta.env.VITE_SUPABASE_URL ?? "",
-      projectId: import.meta.env.VITE_SUPABASE_PROJECT_ID ?? "",
-      emailAllowed,
       rpcResult,
       rpcError,
-      roleRow,
-      roleError,
     };
 
     setAdminDebug(nextDebug);
     setIsAdmin(admin);
 
     if (import.meta.env.DEV) {
-      console.log("[Auth] SUPABASE_URL", nextDebug.supabaseUrl);
-      console.log("[Auth] SUPABASE_PROJECT_ID", nextDebug.projectId);
       console.log("[Auth] user.email", userEmail);
       console.log("[Auth] user.id", authUser.id);
-      console.log("[Auth] email allowlist", emailAllowed);
       console.log("[Auth] rpc has_role admin", rpcResult, rpcError);
-      console.log("[Auth] user_roles row", roleRow, roleError);
     }
 
     return admin;
