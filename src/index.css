@@ -93,6 +93,28 @@
   scroll-margin-top: 7rem;
 }
 
+/* ── Custom Scrollbar ── */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: hsl(var(--background));
+}
+::-webkit-scrollbar-thumb {
+  background: hsl(216 10% 33%);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(216 10% 40%);
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: hsl(216 10% 33%) hsl(var(--background));
+}
+
 /* ── Scroll Reveal ── */
 [data-reveal] {
   opacity: 0;
