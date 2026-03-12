@@ -8,6 +8,7 @@ const mockReviews = [
   { initials: "Aline M.", text: "Com muita sensibilidade e profissionalismo, ele contribui ao meu crescimento, autoconhecimento e equilíbrio emocional. Sou grata a todo o apoio e orientação!" },
   { initials: "Kauan C. S.", text: "Tive e tenho uma ótima experiência nas sessões com o Bruno. Sempre muito atencioso e pontual em assuntos necessários. Recomendo!" },
   { initials: "Aldair F.", text: "O atendimento do Bruno é personalizado e me atendeu super bem. Indico sempre!" },
+  { initials: "Luiz V.", text: "Ótimo profissional." },
 ];
 
 const Stars = () => (
