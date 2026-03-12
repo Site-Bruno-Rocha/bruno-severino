@@ -2,12 +2,12 @@ import { Star } from "lucide-react";
 import { useScrollReveal, useStaggerReveal } from "@/hooks/useScrollReveal";
 
 const mockReviews = [
-  { initials: "M. A.", text: "O atendimento do Bruno é muito acolhedor. Me senti à vontade desde a primeira sessão. Recomendo de olhos fechados." },
-  { initials: "C. S.", text: "Profissional atencioso e comprometido. A abordagem psicanalítica me ajudou a entender questões que eu carregava há anos." },
-  { initials: "L. R.", text: "Sessões online com muita qualidade. O Bruno transmite segurança e respeita o tempo de cada paciente." },
-  { initials: "A. F.", text: "Excelente psicólogo. A escuta dele é diferenciada e o sigilo é absoluto. Me sinto muito bem acompanhada." },
-  { initials: "R. P.", text: "Depois de muitas tentativas com outros profissionais, encontrei no Bruno o acolhimento que precisava." },
-  { initials: "J. M.", text: "Atendimento humano e de qualidade. As sessões me ajudaram a lidar melhor com a ansiedade no dia a dia." },
+  { initials: "Gisele A. C. B.", text: "Sem dúvidas, um profissional atencioso e acolhedor." },
+  { initials: "Kévin R.", text: "Profissional extremamente atencioso, escuta com empatia e explica as questões de forma clara. As sessões têm me ajudado muito a refletir e entender melhor minhas emoções. Recomendo." },
+  { initials: "Talita S.", text: "Atendimento excelente, super indico! Um profissional muito atencioso." },
+  { initials: "Aline M.", text: "Com muita sensibilidade e profissionalismo, ele contribui ao meu crescimento, autoconhecimento e equilíbrio emocional. Sou grata a todo o apoio e orientação!" },
+  { initials: "Kauan C. S.", text: "Tive e tenho uma ótima experiência nas sessões com o Bruno. Sempre muito atencioso e pontual em assuntos necessários. Recomendo!" },
+  { initials: "Aldair F.", text: "O atendimento do Bruno é personalizado e me atendeu super bem. Indico sempre!" },
 ];
 
 const Stars = () => (
