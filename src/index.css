@@ -162,6 +162,29 @@
   }
 }
 
+/* ── Marquee / infinite scroll ── */
+@keyframes marquee-scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.marquee-track {
+  animation: marquee-scroll 40s linear infinite;
+  width: max-content;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track {
+    animation: none;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+}
+
 /* ── Mobile accordion centering ── */
 @media (max-width: 767px) {
   .accordion-mobile-center [data-radix-collection-item] button {
