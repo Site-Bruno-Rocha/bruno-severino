@@ -32,7 +32,7 @@ const AvaliacoesSection = () => {
             O que dizem os pacientes
           </h2>
           <p className="text-muted-foreground mb-12 max-w-lg">
-            Avaliações do Google ★ 5,0 · 7 avaliações
+            Avaliações do Google ★ 5,0 · 8 avaliações
           </p>
         </div>
 
