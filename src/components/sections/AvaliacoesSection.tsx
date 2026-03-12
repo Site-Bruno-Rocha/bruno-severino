@@ -31,7 +31,7 @@ const AvaliacoesSection = () => {
             O que dizem os pacientes
           </h2>
           <p className="text-muted-foreground mb-12 max-w-lg">
-            Avaliações do Google <span className="text-muted-foreground/50">(integração em breve)</span>
+            Avaliações do Google ★ 5,0 · 7 avaliações
           </p>
         </div>
 
