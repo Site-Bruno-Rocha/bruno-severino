@@ -2,13 +2,15 @@ import { Star } from "lucide-react";
 import { useScrollReveal } from "@/hooks/useScrollReveal";
 
 const reviews = [
-  { initials: "Gisele A. C. B.", text: "Sem dúvidas, um profissional atencioso e acolhedor." },
-  { initials: "Kévin R.", text: "Profissional extremamente atencioso, escuta com empatia e explica as questões de forma clara. As sessões têm me ajudado muito a refletir e entender melhor minhas emoções. Recomendo." },
-  { initials: "Talita S.", text: "Atendimento excelente, super indico! Um profissional muito atencioso." },
-  { initials: "Aline M.", text: "Com muita sensibilidade e profissionalismo, ele contribui ao meu crescimento, autoconhecimento e equilíbrio emocional. Sou grata a todo o apoio e orientação!" },
-  { initials: "Kauan C. S.", text: "Tive e tenho uma ótima experiência nas sessões com o Bruno. Sempre muito atencioso e pontual em assuntos necessários. Recomendo!" },
-  { initials: "Aldair F.", text: "O atendimento do Bruno é personalizado e me atendeu super bem. Indico sempre!" },
-  { initials: "Luiz V.", text: "Ótimo profissional." },
+  { initials: "Kauan Santos", text: "Tive e tenho uma ótima experiência nas sessões com o Bruno. Sempre muito atencioso e pontual em assuntos necessários. Recomendo!" },
+  { initials: "Diego Fonseca", text: "Sempre incrível, e de total profissionalismo. Excelente atendimento." },
+  { initials: "Bruna Horta", text: "Ótimo profissional, me acompanha há uns anos. Sinto que tive uma grande evolução nesse período, resultado nítido da terapia. Recomendo de olhos fechados!" },
+  { initials: "Aldair Freitas", text: "Excelente psicólogo! O processo terapêutico tem sido fundamental para o meu autoconhecimento e evolução pessoal. Profissional muito capacitado e pontual." },
+  { initials: "Luiz Vikings", text: "Ótimo profissional." },
+  { initials: "Gisele Barbosa", text: "Sem dúvidas, um profissional atencioso e acolhedor." },
+  { initials: "Kévin Rufino", text: "Profissional extremamente atencioso, escuta com empatia e explica as questões de forma clara. As sessões têm me ajudado muito a refletir e entender melhor minhas emoções. Recomendo." },
+  { initials: "Talita Santos", text: "Atendimento excelente, super indico! Um profissional muito atencioso." },
+  { initials: "Aline Mariano", text: "Com muita sensibilidade e profissionalismo, ele contribui ao meu crescimento, autoconhecimento e equilíbrio emocional. Sou grata a todo o apoio e orientação!" },
 ];
 
 const Stars = () => (
@@ -44,7 +46,7 @@ const AvaliacoesSection = () => {
             O que dizem os pacientes
           </h2>
           <p className="text-muted-foreground mb-12 max-w-lg">
-            Avaliações do Google ★ 5,0 · 8 avaliações
+            Avaliações do Google ★ 5,0 · 10 avaliações
           </p>
         </div>
       </div>
