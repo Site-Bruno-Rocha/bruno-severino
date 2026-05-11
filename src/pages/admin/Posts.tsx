@@ -46,7 +46,9 @@ const AdminPosts = () => {
 
   const handleDelete = async (postId: string) => {
     try {
-      const { error } = await supabase.from("posts").delete().eq("id", postId);
+      const { error } = await supabase.functions.invoke("admin-post-action", {
+        body: { action: "delete", postId },
+      });
       if (error) {
         console.error("Erro ao excluir:", error);
         throw error;
@@ -61,19 +63,18 @@ const AdminPosts = () => {
 
   const togglePublish = async (post: DbPost) => {
     const novoStatus = post.status === "published" ? "draft" : "published";
-    const novoPublishedAt = novoStatus === "published" ? new Date().toISOString() : null;
     try {
-      const { error } = await supabase
-        .from("posts")
-        .update({ status: novoStatus, published_at: novoPublishedAt })
-        .eq("id", post.id);
+      const { data, error } = await supabase.functions.invoke<{ post: DbPost }>("admin-post-action", {
+        body: { action: "set-status", postId: post.id, status: novoStatus },
+      });
       if (error) {
         console.error("Erro ao alterar status:", error);
         throw error;
       }
+      if (!data?.post) throw new Error("Resposta inválida ao alterar status");
       setPosts((prev) =>
         prev.map((p) =>
-          p.id === post.id ? { ...p, status: novoStatus, published_at: novoPublishedAt } : p
+          p.id === post.id ? data.post : p
         )
       );
       toast.success(`Post ${novoStatus === "published" ? "publicado" : "ocultado"} com sucesso`);
