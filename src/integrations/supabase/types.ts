@@ -79,6 +79,29 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      admin_delete_post: { Args: { _post_id: string }; Returns: undefined }
+      admin_set_post_status: {
+        Args: { _post_id: string; _status: string }
+        Returns: {
+          author_id: string | null
+          category: string
+          content: string
+          created_at: string
+          excerpt: string
+          id: string
+          published_at: string | null
+          slug: string
+          status: string
+          title: string
+          updated_at: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "posts"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
