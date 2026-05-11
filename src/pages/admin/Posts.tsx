@@ -1,6 +1,7 @@
 import { useEffect, useState, useCallback } from "react";
 import { Link } from "react-router-dom";
-import { fetchAllPosts, deletePost, updatePost, type DbPost } from "@/hooks/usePosts";
+import { fetchAllPosts, type DbPost } from "@/hooks/usePosts";
+import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -43,24 +44,42 @@ const AdminPosts = () => {
     void load();
   }, [authLoading, session, load]);
 
-  const handleDelete = async (id: string) => {
+  const handleDelete = async (postId: string) => {
     try {
-      await deletePost(id);
-      toast.success("Post excluído.");
-      load();
-    } catch {
-      toast.error("Erro ao excluir.");
+      const { error } = await supabase.from("posts").delete().eq("id", postId);
+      if (error) {
+        console.error("Erro ao excluir:", error);
+        throw error;
+      }
+      setPosts((prev) => prev.filter((p) => p.id !== postId));
+      toast.success("Post excluído com sucesso");
+    } catch (err) {
+      console.error("Exceção ao excluir:", err);
+      toast.error("Erro ao excluir");
     }
   };
 
   const togglePublish = async (post: DbPost) => {
-    const newStatus = post.status === "published" ? "draft" : "published";
+    const novoStatus = post.status === "published" ? "draft" : "published";
+    const novoPublishedAt = novoStatus === "published" ? new Date().toISOString() : null;
     try {
-      await updatePost(post.id, { status: newStatus });
-      toast.success(newStatus === "published" ? "Publicado!" : "Despublicado.");
-      load();
-    } catch {
-      toast.error("Erro ao alterar status.");
+      const { error } = await supabase
+        .from("posts")
+        .update({ status: novoStatus, published_at: novoPublishedAt })
+        .eq("id", post.id);
+      if (error) {
+        console.error("Erro ao alterar status:", error);
+        throw error;
+      }
+      setPosts((prev) =>
+        prev.map((p) =>
+          p.id === post.id ? { ...p, status: novoStatus, published_at: novoPublishedAt } : p
+        )
+      );
+      toast.success(`Post ${novoStatus === "published" ? "publicado" : "ocultado"} com sucesso`);
+    } catch (err) {
+      console.error("Exceção ao alterar status:", err);
+      toast.error("Erro ao alterar status");
     }
   };
 
