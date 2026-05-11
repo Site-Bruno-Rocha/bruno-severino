@@ -7,6 +7,7 @@ type AdminDebugState = {
   userId: string | null;
   rpcResult: boolean | null;
   rpcError: string | null;
+  emailAllowlistCheck: boolean | null;
 };
 
 const EMPTY_ADMIN_DEBUG: AdminDebugState = {
@@ -14,21 +15,28 @@ const EMPTY_ADMIN_DEBUG: AdminDebugState = {
   userId: null,
   rpcResult: null,
   rpcError: null,
+  emailAllowlistCheck: null,
 };
 
 export function useAuth() {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [isAdmin, setIsAdmin] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [authLoading, setAuthLoading] = useState(true);
+  const [adminLoading, setAdminLoading] = useState(false);
   const [adminDebug, setAdminDebug] = useState<AdminDebugState>(EMPTY_ADMIN_DEBUG);
 
   const checkAdmin = useCallback(async (authUser: User): Promise<boolean> => {
     const userEmail = authUser.email?.toLowerCase() ?? null;
+    const emailAllowlistCheck = false;
 
     let admin = false;
     let rpcResult: boolean | null = null;
     let rpcError: string | null = null;
+
+    console.log("session user id:", authUser.id);
+    console.log("session user email:", userEmail);
+    console.log("email allowlist check:", emailAllowlistCheck);
 
     try {
       const { data: rpcData, error: rpcErr } = await supabase.rpc("has_role", {
@@ -38,9 +46,33 @@ export function useAuth() {
 
       rpcResult = rpcData === true;
       rpcError = rpcErr?.message ?? null;
-      if (!rpcErr && rpcData === true) admin = true;
+      console.log("has_role result:", rpcResult);
+
+      if (rpcErr) {
+        console.error("Erro ao verificar role:", rpcErr);
+      } else if (rpcData === true) {
+        admin = true;
+      }
     } catch (e) {
       rpcError = e instanceof Error ? e.message : "Erro desconhecido na RPC has_role";
+      rpcResult = false;
+      console.log("has_role result:", false);
+      console.error("Exceção ao verificar role:", e);
+    }
+
+    if (!admin) {
+      const { data: ownRoleData, error: ownRoleError } = await supabase
+        .from("user_roles")
+        .select("role")
+        .eq("user_id", authUser.id)
+        .eq("role", "admin")
+        .maybeSingle();
+
+      if (ownRoleError) {
+        console.error("Erro ao verificar role do usuário autenticado:", ownRoleError);
+      } else {
+        admin = ownRoleData?.role === "admin";
+      }
     }
 
     const nextDebug: AdminDebugState = {
@@ -48,6 +80,7 @@ export function useAuth() {
       userId: authUser.id,
       rpcResult,
       rpcError,
+      emailAllowlistCheck,
     };
 
     setAdminDebug(nextDebug);
@@ -63,33 +96,47 @@ export function useAuth() {
   }, []);
 
   useEffect(() => {
-    const applySession = async (nextSession: Session | null) => {
+    const applySession = (nextSession: Session | null) => {
       setSession(nextSession);
       const nextUser = nextSession?.user ?? null;
       setUser(nextUser);
-
-      if (nextUser) {
-        await checkAdmin(nextUser);
-      } else {
-        setIsAdmin(false);
-        setAdminDebug(EMPTY_ADMIN_DEBUG);
-      }
-
-      setLoading(false);
+      setAuthLoading(false);
     };
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, nextSession) => {
-      setLoading(true);
-      void applySession(nextSession);
+      setAuthLoading(true);
+      applySession(nextSession);
     });
 
-    setLoading(true);
+    setAuthLoading(true);
     void supabase.auth.getSession().then(({ data: { session: nextSession } }) => {
-      void applySession(nextSession);
+      applySession(nextSession);
     });
 
     return () => subscription.unsubscribe();
-  }, [checkAdmin]);
+  }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    if (!user) {
+      setIsAdmin(false);
+      setAdminDebug(EMPTY_ADMIN_DEBUG);
+      setAdminLoading(false);
+      return;
+    }
+
+    setAdminLoading(true);
+    void checkAdmin(user).then((admin) => {
+      if (!cancelled) setIsAdmin(admin);
+    }).finally(() => {
+      if (!cancelled) setAdminLoading(false);
+    });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [user, checkAdmin]);
 
   const signIn = async (email: string, password: string) => {
     const { data, error } = await supabase.auth.signInWithPassword({ email, password });
@@ -103,6 +150,8 @@ export function useAuth() {
     setSession(null);
     setAdminDebug(EMPTY_ADMIN_DEBUG);
   };
+
+  const loading = authLoading || adminLoading;
 
   return { user, session, isAdmin, loading, signIn, signOut, checkAdmin, adminDebug };
 }
