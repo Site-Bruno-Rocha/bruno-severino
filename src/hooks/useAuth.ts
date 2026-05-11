@@ -18,6 +18,8 @@ const EMPTY_ADMIN_DEBUG: AdminDebugState = {
   emailAllowlistCheck: null,
 };
 
+const ADMIN_EMAIL_ALLOWLIST: string[] = [];
+
 export function useAuth() {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
@@ -28,7 +30,7 @@ export function useAuth() {
 
   const checkAdmin = useCallback(async (authUser: User): Promise<boolean> => {
     const userEmail = authUser.email?.toLowerCase() ?? null;
-    const emailAllowlistCheck = false;
+    const emailAllowlistCheck = userEmail ? ADMIN_EMAIL_ALLOWLIST.includes(userEmail.trim()) : false;
 
     let admin = false;
     let rpcResult: boolean | null = null;
@@ -100,6 +102,8 @@ export function useAuth() {
       setSession(nextSession);
       const nextUser = nextSession?.user ?? null;
       setUser(nextUser);
+      setIsAdmin(false);
+      setAdminLoading(Boolean(nextUser));
       setAuthLoading(false);
     };
 
