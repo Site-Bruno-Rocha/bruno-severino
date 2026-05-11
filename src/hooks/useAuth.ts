@@ -122,8 +122,12 @@ export function useAuth() {
 
   useEffect(() => {
     let cancelled = false;
+    const sessionUser = session?.user ?? null;
 
-    if (!user) {
+    console.log("session user id:", session?.user?.id);
+    console.log("session user email:", session?.user?.email);
+
+    if (!sessionUser) {
       setIsAdmin(false);
       setAdminDebug(EMPTY_ADMIN_DEBUG);
       setAdminLoading(false);
@@ -131,7 +135,7 @@ export function useAuth() {
     }
 
     setAdminLoading(true);
-    void checkAdmin(user).then((admin) => {
+    void checkAdmin(sessionUser).then((admin) => {
       if (!cancelled) setIsAdmin(admin);
     }).finally(() => {
       if (!cancelled) setAdminLoading(false);
@@ -140,7 +144,7 @@ export function useAuth() {
     return () => {
       cancelled = true;
     };
-  }, [user, checkAdmin]);
+  }, [session, checkAdmin]);
 
   const signIn = async (email: string, password: string) => {
     const { data, error } = await supabase.auth.signInWithPassword({ email, password });
