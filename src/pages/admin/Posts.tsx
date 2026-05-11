@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { fetchAllPosts, deletePost, updatePost, type DbPost } from "@/hooks/usePosts";
 import { Button } from "@/components/ui/button";
@@ -11,22 +11,37 @@ import {
 import { Plus, Pencil, Trash2, Eye, EyeOff } from "lucide-react";
 import { toast } from "sonner";
 import AdminLayout from "@/components/admin/AdminLayout";
+import { useAuth } from "@/hooks/useAuth";
 
 const AdminPosts = () => {
+  const { session, loading: authLoading } = useAuth();
   const [posts, setPosts] = useState<DbPost[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadError, setLoadError] = useState<string | null>(null);
 
-  const load = async () => {
+  const load = useCallback(async () => {
     setLoading(true);
+    setLoadError(null);
     try {
-      setPosts(await fetchAllPosts());
-    } catch {
+      const data = await fetchAllPosts();
+      setPosts(data);
+    } catch (error) {
+      console.error("Erro ao buscar posts:", error);
+      setLoadError("Erro ao carregar posts.");
       toast.error("Erro ao carregar posts.");
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
-  };
+  }, []);
 
-  useEffect(() => { load(); }, []);
+  useEffect(() => {
+    if (authLoading) return;
+    if (!session?.user) {
+      setLoading(false);
+      return;
+    }
+    void load();
+  }, [authLoading, session, load]);
 
   const handleDelete = async (id: string) => {
     try {
@@ -61,9 +76,14 @@ const AdminPosts = () => {
         </Button>
       </div>
 
-      {loading ? (
+      {loading || authLoading ? (
         <div className="flex justify-center py-20">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
+        </div>
+      ) : loadError ? (
+        <div className="text-center py-20 text-muted-foreground">
+          <p className="mb-4">{loadError}</p>
+          <Button variant="outline" size="sm" onClick={() => load()}>Tentar novamente</Button>
         </div>
       ) : posts.length === 0 ? (
         <div className="text-center py-20 text-muted-foreground">
