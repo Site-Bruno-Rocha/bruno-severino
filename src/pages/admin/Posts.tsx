@@ -76,9 +76,14 @@ const AdminPosts = () => {
         </Button>
       </div>
 
-      {loading ? (
+      {loading || authLoading ? (
         <div className="flex justify-center py-20">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary" />
+        </div>
+      ) : loadError ? (
+        <div className="text-center py-20 text-muted-foreground">
+          <p className="mb-4">{loadError}</p>
+          <Button variant="outline" size="sm" onClick={() => load()}>Tentar novamente</Button>
         </div>
       ) : posts.length === 0 ? (
         <div className="text-center py-20 text-muted-foreground">
