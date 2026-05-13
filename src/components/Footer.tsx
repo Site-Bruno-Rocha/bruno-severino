@@ -59,12 +59,12 @@ const Footer = () => {
           <p>
             Criado por{" "}
             <a
-              href="https://nextcorporation.com.br/"
+              href="https://nextassessoria.com/"
               target="_blank"
               rel="noopener noreferrer"
               className="hover:text-muted-foreground/70 hover:underline underline-offset-2 transition-colors"
             >
-              Next Corporation
+              Next Assessoria
             </a>
           </p>
         </div>
