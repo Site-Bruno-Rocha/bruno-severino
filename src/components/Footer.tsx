@@ -59,7 +59,7 @@ const Footer = () => {
           <p>
             Criado por{" "}
             <a
-              href="https://nextassessoria.com/"
+              href="https://www.nextassessoria.com/"
               target="_blank"
               rel="noopener noreferrer"
               className="hover:text-muted-foreground/70 hover:underline underline-offset-2 transition-colors"
