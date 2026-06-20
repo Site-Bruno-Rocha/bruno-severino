@@ -18,7 +18,7 @@ const HeroSection = () => (
     />
 
     {/* Decorative line */}
-    <div className="absolute left-6 md:left-12 top-32 bottom-32 w-px bg-gradient-to-b from-transparent via-primary/20 to-transparent pointer-events-none" aria-hidden="true" />
+    <div className="hidden md:block absolute left-12 top-32 bottom-32 w-px bg-gradient-to-b from-transparent via-primary/20 to-transparent pointer-events-none" aria-hidden="true" />
 
     <div className="max-w-6xl mx-auto px-6 w-full relative">
       <div className="flex flex-col lg:grid lg:grid-cols-[1.15fr_0.85fr] gap-12 lg:gap-20 items-center">
