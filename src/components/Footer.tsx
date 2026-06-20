@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { CRP, EMAIL_PLACEHOLDER, INSTAGRAM_URL, INSTAGRAM_HANDLE, WHATSAPP_URL } from "@/config";
 
 const InstagramIcon = ({ size = 14 }: { size?: number }) => (
@@ -52,6 +53,17 @@ const Footer = () => {
 
         {/* CRP */}
         <p className="text-xs text-muted-foreground/70">CRP {CRP}</p>
+
+        {/* Legal */}
+        <nav aria-label="Links legais" className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-xs text-muted-foreground/70">
+          <Link to="/politica-de-privacidade" className="hover:text-foreground transition-colors">
+            Política de Privacidade
+          </Link>
+          <span className="text-border">·</span>
+          <Link to="/termos-de-uso" className="hover:text-foreground transition-colors">
+            Termos de Uso
+          </Link>
+        </nav>
 
         {/* Copyright + Créditos */}
         <div className="space-y-1 text-xs text-muted-foreground/50">
