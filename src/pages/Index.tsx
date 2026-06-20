@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { lazy, Suspense, useCallback, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -19,8 +19,12 @@ import {
 } from "lucide-react";
 
 import HeroSection from "@/components/sections/HeroSection";
-import AvaliacoesSection from "@/components/sections/AvaliacoesSection";
-import VideoSection from "@/components/sections/VideoSection";
+
+// Lazy-load below-the-fold heavy sections to shrink initial JS bundle
+const AvaliacoesSection = lazy(() => import("@/components/sections/AvaliacoesSection"));
+const VideoSection = lazy(() => import("@/components/sections/VideoSection"));
+
+const SectionFallback = () => <div className="py-14 lg:py-24" aria-hidden="true" />;
 
 /* ── SOBRE MIM ── */
 const stats = [
