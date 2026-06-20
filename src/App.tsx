@@ -8,6 +8,7 @@ import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import PoliticaDePrivacidade from "./pages/PoliticaDePrivacidade";
 import TermosDeUso from "./pages/TermosDeUso";
+import BlogPost from "./pages/BlogPost";
 
 const AdminLogin = lazy(() => import("./pages/admin/Login"));
 const AdminDashboard = lazy(() => import("./pages/admin/Dashboard"));
@@ -40,9 +41,9 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/politica-de-privacidade" element={<PoliticaDePrivacidade />} />
             <Route path="/termos-de-uso" element={<TermosDeUso />} />
-            {/* Redirect old routes to one-page */}
+            {/* Blog */}
             <Route path="/blog" element={<Navigate to="/#blog" replace />} />
-            <Route path="/blog/:slug" element={<Navigate to="/#blog" replace />} />
+            <Route path="/blog/:slug" element={<BlogPost />} />
             <Route path="/agendar" element={<Navigate to="/#agendar" replace />} />
             {/* Admin routes */}
             <Route path="/admin/login" element={<AdminLogin />} />
