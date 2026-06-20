@@ -223,6 +223,8 @@ const BlogPreviewSection = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const ref = useScrollReveal();
+  const sectionRef = useRef<HTMLElement | null>(null);
+  const [enableRealtime, setEnableRealtime] = useState(false);
 
   const loadPublishedPosts = useCallback(async (showLoader = false) => {
     if (showLoader) setLoading(true);
@@ -238,9 +240,30 @@ const BlogPreviewSection = () => {
     }
   }, []);
 
+  // Initial fetch (no realtime yet — saves a websocket on first paint)
   useEffect(() => {
     loadPublishedPosts(true);
+  }, [loadPublishedPosts]);
 
+  // Defer realtime subscription until the blog section scrolls into view
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el || enableRealtime) return;
+    const io = new IntersectionObserver(
+      (entries) => {
+        if (entries.some((e) => e.isIntersecting)) {
+          setEnableRealtime(true);
+          io.disconnect();
+        }
+      },
+      { rootMargin: "200px" }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, [enableRealtime]);
+
+  useEffect(() => {
+    if (!enableRealtime) return;
     const channel = supabase
       .channel("public-blog-posts")
       .on("postgres_changes", { event: "*", schema: "public", table: "posts" }, () => {
@@ -251,10 +274,10 @@ const BlogPreviewSection = () => {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [loadPublishedPosts]);
+  }, [enableRealtime, loadPublishedPosts]);
 
   return (
-    <section id="blog" className="py-14 lg:py-24">
+    <section id="blog" ref={sectionRef} className="py-14 lg:py-24">
       <div className="max-w-6xl mx-auto px-5 sm:px-6">
         <div ref={ref} data-reveal>
           <p className="text-xs uppercase tracking-[0.25em] text-primary font-medium mb-5">Blog</p>
@@ -528,8 +551,9 @@ const Index = () => {
         <AbordagemSection />
         <AtendimentoSection />
         <AvaliacoesSection />
-        <VideoSection />
-        <BlogPreviewSection />
+        <Suspense fallback={<SectionFallback />}>
+          <VideoSection />
+        </Suspense>
         <FAQSection />
         <AgendarSection />
         <ContatoSection />
