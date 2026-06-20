@@ -382,41 +382,114 @@ const ContatoSection = () => {
   return (
     <section id="contato" className="py-14 lg:py-24 bg-card/30">
       <div className="max-w-6xl mx-auto px-5 sm:px-6">
-        <div className="max-w-lg" ref={ref} data-reveal>
-          <p className="text-xs uppercase tracking-[0.25em] text-primary font-medium mb-5">Contato</p>
-          <h2 className="text-2xl md:text-4xl font-bold text-foreground mb-8 text-balance">
-            Vamos conversar?
-          </h2>
+        <div ref={ref} data-reveal className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-start">
+          {/* Left — main content */}
+          <div>
+            <p className="text-xs uppercase tracking-[0.25em] text-primary font-medium mb-5">Contato</p>
+            <h2 className="text-2xl md:text-4xl font-bold text-foreground mb-8 text-balance">
+              Vamos conversar?
+            </h2>
 
-          <div className="space-y-4 mb-8">
-            <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-sm text-muted-foreground hover:text-foreground transition-colors">
-              <MessageCircle size={16} className="text-primary shrink-0" />
-              (11) 95391-8737
-            </a>
-            <a href={`mailto:${EMAIL_PLACEHOLDER}`} className="flex items-center gap-3 text-sm text-muted-foreground hover:text-foreground transition-colors">
-              <Mail size={16} className="text-primary shrink-0" />
-              {EMAIL_PLACEHOLDER}
-            </a>
-            <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-sm text-muted-foreground hover:text-foreground transition-colors">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-primary shrink-0"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
-              {INSTAGRAM_HANDLE}
-            </a>
-            <div className="flex items-center gap-3 text-sm text-muted-foreground">
-              <Clock size={16} className="text-primary shrink-0" />
-              Segunda a sábado · Somente com hora marcada
+            <div className="space-y-4 mb-8">
+              <a href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-sm text-muted-foreground hover:text-foreground transition-colors">
+                <MessageCircle size={16} className="text-primary shrink-0" />
+                (11) 95391-8737
+              </a>
+              <a href={`mailto:${EMAIL_PLACEHOLDER}`} className="flex items-center gap-3 text-sm text-muted-foreground hover:text-foreground transition-colors">
+                <Mail size={16} className="text-primary shrink-0" />
+                {EMAIL_PLACEHOLDER}
+              </a>
+              <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-sm text-muted-foreground hover:text-foreground transition-colors">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-primary shrink-0"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
+                {INSTAGRAM_HANDLE}
+              </a>
+              <div className="flex items-center gap-3 text-sm text-muted-foreground">
+                <Clock size={16} className="text-primary shrink-0" />
+                Segunda a sábado · Somente com hora marcada
+              </div>
             </div>
+
+            <div className="flex flex-wrap gap-3 mb-6">
+              <CTAButton href="#agendar" showArrow>
+                Agendar sessão
+              </CTAButton>
+              <WhatsAppButton />
+            </div>
+
+            <p className="text-xs text-muted-foreground/50 max-w-sm leading-relaxed">
+              Se preferir, escreva apenas o essencial. Detalhes podem ser conversados em sessão.
+            </p>
           </div>
 
-          <div className="flex flex-wrap gap-3 mb-6">
-            <CTAButton href="#agendar" showArrow>
-              Agendar sessão
-            </CTAButton>
-            <WhatsAppButton />
-          </div>
+          {/* Right — info card */}
+          <aside className="relative">
+            <div
+              className="absolute -inset-6 bg-primary/10 blur-3xl rounded-full pointer-events-none"
+              aria-hidden="true"
+            />
+            <div className="relative rounded-2xl border border-border/50 bg-card/70 backdrop-blur-sm p-7 lg:p-8 shadow-lg shadow-primary/5">
+              <p className="text-xs uppercase tracking-[0.25em] text-primary font-medium mb-3">
+                Atendimento
+              </p>
+              <h3 className="text-lg font-semibold text-foreground mb-6">
+                Como funciona o agendamento
+              </h3>
 
-          <p className="text-xs text-muted-foreground/50 max-w-sm leading-relaxed">
-            Se preferir, escreva apenas o essencial. Detalhes podem ser conversados em sessão.
-          </p>
+              <ul className="space-y-4 mb-7">
+                <li className="flex items-start gap-3">
+                  <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center text-primary shrink-0">
+                    <Clock size={16} />
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-foreground">Horários</p>
+                    <p className="text-xs text-muted-foreground leading-relaxed">
+                      Segunda a sábado · somente com hora marcada
+                    </p>
+                  </div>
+                </li>
+                <li className="flex items-start gap-3">
+                  <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center text-primary shrink-0">
+                    <Monitor size={16} />
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-foreground">Modalidade</p>
+                    <p className="text-xs text-muted-foreground leading-relaxed">
+                      100% online, por Google Meet — todo o Brasil
+                    </p>
+                  </div>
+                </li>
+                <li className="flex items-start gap-3">
+                  <div className="w-9 h-9 rounded-xl bg-primary/10 flex items-center justify-center text-primary shrink-0">
+                    <ShieldCheck size={16} />
+                  </div>
+                  <div>
+                    <p className="text-sm font-medium text-foreground">Sigilo</p>
+                    <p className="text-xs text-muted-foreground leading-relaxed">
+                      Atendimento ético e confidencial — CRP {CRP}
+                    </p>
+                  </div>
+                </li>
+              </ul>
+
+              <div className="rounded-xl border border-primary/20 bg-primary/5 p-4 mb-6">
+                <p className="text-sm text-foreground/90 leading-relaxed">
+                  Respondo o contato no WhatsApp em até <strong className="text-primary">24h úteis</strong> com as opções de horários disponíveis.
+                </p>
+              </div>
+
+              <WhatsAppButton variant="primary" size="md" label="Falar no WhatsApp" className="w-full justify-center" />
+
+              <div className="mt-6 pt-6 border-t border-border/50 flex items-center justify-center gap-5 text-xs text-muted-foreground">
+                <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">
+                  Instagram
+                </a>
+                <span className="text-border">·</span>
+                <a href={`mailto:${EMAIL_PLACEHOLDER}`} className="hover:text-foreground transition-colors">
+                  E-mail
+                </a>
+              </div>
+            </div>
+          </aside>
         </div>
       </div>
     </section>
