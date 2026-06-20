@@ -121,6 +121,7 @@
     outline: 2px solid hsl(var(--ring));
     outline-offset: 2px;
   }
+}
 
 @layer utilities {
   .text-balance {
