@@ -441,8 +441,11 @@ const Index = () => {
 
   return (
     <>
+      <a href="#conteudo" className="skip-link">
+        Pular para o conteúdo
+      </a>
       <Header />
-      <main>
+      <main id="conteudo" tabIndex={-1}>
         <HeroSection />
         <SobreSection />
         <ServicosSection />
