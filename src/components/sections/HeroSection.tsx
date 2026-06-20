@@ -61,15 +61,31 @@ const HeroSection = () => (
                 background: "linear-gradient(160deg, hsl(215 70% 55% / 0.12) 0%, transparent 60%)",
               }}
             />
-            <img
-              src="/images/bruno-hero.jpg"
-              alt="Bruno Severino Rocha, psicólogo (psicanálise)"
-              width={320}
-              height={416}
-              className="w-full h-full object-cover object-center"
-              style={{ filter: "contrast(1.06) saturate(0.92)" }}
-              loading="eager"
-            />
+            <picture>
+              <source
+                type="image/avif"
+                srcSet="/images/bruno-hero-320.avif 320w, /images/bruno-hero-480.avif 480w, /images/bruno-hero-640.avif 640w, /images/bruno-hero-800.avif 800w, /images/bruno-hero-1024.avif 1024w"
+                sizes="(min-width: 1024px) 320px, (min-width: 640px) 288px, 224px"
+              />
+              <source
+                type="image/webp"
+                srcSet="/images/bruno-hero-320.webp 320w, /images/bruno-hero-480.webp 480w, /images/bruno-hero-640.webp 640w, /images/bruno-hero-800.webp 800w, /images/bruno-hero-1024.webp 1024w"
+                sizes="(min-width: 1024px) 320px, (min-width: 640px) 288px, 224px"
+              />
+              <img
+                src="/images/bruno-hero-640.jpg"
+                srcSet="/images/bruno-hero-640.jpg 640w, /images/bruno-hero-800.jpg 800w"
+                sizes="(min-width: 1024px) 320px, (min-width: 640px) 288px, 224px"
+                alt="Bruno Severino Rocha, psicólogo (psicanálise)"
+                width={320}
+                height={416}
+                className="w-full h-full object-cover object-center"
+                style={{ filter: "contrast(1.06) saturate(0.92)" }}
+                loading="eager"
+                fetchPriority="high"
+                decoding="async"
+              />
+            </picture>
             <div className="absolute inset-0 -z-10 bg-card flex items-center justify-center text-muted-foreground/30 text-2xl font-bold">
               BS
             </div>
