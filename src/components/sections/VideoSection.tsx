@@ -82,7 +82,9 @@ const VideoSection = () => {
                   preload="metadata"
                   className="w-full h-full object-cover"
                   title="Vídeo de apresentação — Bruno Severino Rocha"
+                  aria-label="Vídeo de apresentação do psicólogo Bruno Severino Rocha"
                 />
+
 
                 {/* Tap to play overlay */}
                 {needsTap && (
