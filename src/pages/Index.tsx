@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import FloatingWhatsApp from "@/components/FloatingWhatsApp";
 import CTAButton from "@/components/CTAButton";
 import WhatsAppButton from "@/components/WhatsAppButton";
 import BlogCard from "@/components/BlogCard";
-import BlogModal from "@/components/BlogModal";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Skeleton } from "@/components/ui/skeleton";
 import { EMAIL_PLACEHOLDER, WHATSAPP_URL, CRP, INSTAGRAM_URL, INSTAGRAM_HANDLE } from "@/config";
@@ -213,7 +213,8 @@ const AtendimentoSection = () => {
 };
 
 /* ── BLOG PREVIEW ── */
-const BlogPreviewSection = ({ onSelectPost }: { onSelectPost: (postId: string) => void }) => {
+const BlogPreviewSection = () => {
+  const navigate = useNavigate();
   const [displayPosts, setDisplayPosts] = useState<DbPost[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -276,7 +277,7 @@ const BlogPreviewSection = ({ onSelectPost }: { onSelectPost: (postId: string) =
           <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
             {displayPosts.map((post) => (
               <div key={post.id}>
-                <BlogCard post={post} onClick={() => onSelectPost(post.id)} />
+                <BlogCard post={post} onClick={() => navigate(`/blog/${post.slug}`)} />
               </div>
             ))}
           </div>
