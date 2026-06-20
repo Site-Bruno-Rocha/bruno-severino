@@ -1,8 +1,16 @@
 import { Link } from "react-router-dom";
 import Footer from "@/components/Footer";
 import { CRP, EMAIL_PLACEHOLDER } from "@/config";
+import { usePageMeta } from "@/hooks/usePageMeta";
 
 const TermosDeUso = () => {
+  usePageMeta({
+    title: "Termos de Uso | Bruno Severino Rocha — Psicólogo",
+    description:
+      "Termos de uso do site do psicólogo Bruno Severino Rocha (CRP 06/171992): finalidade do site, agendamento, sigilo profissional e responsabilidades.",
+    path: "/termos-de-uso",
+  });
+
   const updated = "20 de junho de 2026";
 
   return (
