@@ -550,10 +550,11 @@ const Index = () => {
         <ServicosSection />
         <AbordagemSection />
         <AtendimentoSection />
-        <AvaliacoesSection />
         <Suspense fallback={<SectionFallback />}>
+          <AvaliacoesSection />
           <VideoSection />
         </Suspense>
+        <BlogPreviewSection />
         <FAQSection />
         <AgendarSection />
         <ContatoSection />
