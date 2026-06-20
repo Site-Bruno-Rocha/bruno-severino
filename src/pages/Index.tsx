@@ -425,8 +425,6 @@ const ContatoSection = () => {
 
 /* ── PAGE ── */
 const Index = () => {
-  const [selectedPostId, setSelectedPostId] = useState<string | null>(null);
-
   useEffect(() => {
     document.title = "Bruno Severino Rocha | Psicólogo Online — Psicanálise";
     const meta = document.querySelector('meta[name="description"]');
@@ -454,14 +452,13 @@ const Index = () => {
         <AtendimentoSection />
         <AvaliacoesSection />
         <VideoSection />
-        <BlogPreviewSection onSelectPost={setSelectedPostId} />
+        <BlogPreviewSection />
         <FAQSection />
         <AgendarSection />
         <ContatoSection />
       </main>
       <Footer />
       <FloatingWhatsApp />
-      <BlogModal postId={selectedPostId} open={!!selectedPostId} onClose={() => setSelectedPostId(null)} />
     </>
   );
 };
