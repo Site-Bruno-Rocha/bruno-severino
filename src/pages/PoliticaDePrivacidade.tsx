@@ -1,8 +1,16 @@
 import { Link } from "react-router-dom";
 import Footer from "@/components/Footer";
 import { CRP, EMAIL_PLACEHOLDER, WHATSAPP_URL } from "@/config";
+import { usePageMeta } from "@/hooks/usePageMeta";
 
 const PoliticaDePrivacidade = () => {
+  usePageMeta({
+    title: "Política de Privacidade | Bruno Severino Rocha — Psicólogo",
+    description:
+      "Como tratamos seus dados pessoais em conformidade com a LGPD (Lei 13.709/2018) e o sigilo profissional do Código de Ética do CFP.",
+    path: "/politica-de-privacidade",
+  });
+
   const updated = "20 de junho de 2026";
 
   return (
