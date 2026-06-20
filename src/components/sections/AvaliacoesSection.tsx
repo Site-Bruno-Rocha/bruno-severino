@@ -34,11 +34,12 @@ const ReviewCard = ({ review }: { review: typeof reviews[0] }) => (
 const AvaliacoesSection = () => {
   const titleRef = useScrollReveal();
 
-  // Duplicate items for seamless loop
+  // Duplicate items for seamless loop (clones are hidden from assistive tech)
+  const originalCount = reviews.length;
   const duplicated = [...reviews, ...reviews];
 
   return (
-    <section id="avaliacoes" className="py-14 lg:py-24 overflow-hidden">
+    <section id="avaliacoes" className="py-14 lg:py-24 overflow-hidden" aria-label="Avaliações de pacientes">
       <div className="max-w-6xl mx-auto px-5 sm:px-6">
         <div ref={titleRef} data-reveal>
           <p className="text-xs uppercase tracking-[0.25em] text-primary font-medium mb-5">Avaliações</p>
@@ -58,11 +59,20 @@ const AvaliacoesSection = () => {
         <div className="absolute right-0 top-0 bottom-0 w-16 sm:w-24 z-10 pointer-events-none bg-gradient-to-l from-background to-transparent" />
 
         {/* Scrolling track */}
-        <div className="flex gap-5 marquee-track group-hover:[animation-play-state:paused]">
-          {duplicated.map((review, i) => (
-            <ReviewCard key={i} review={review} />
-          ))}
-        </div>
+        <ul className="flex gap-5 marquee-track group-hover:[animation-play-state:paused] list-none p-0 m-0">
+          {duplicated.map((review, i) => {
+            const isClone = i >= originalCount;
+            return (
+              <li
+                key={i}
+                aria-hidden={isClone ? "true" : undefined}
+                {...(isClone ? { inert: "" as unknown as boolean } : {})}
+              >
+                <ReviewCard review={review} />
+              </li>
+            );
+          })}
+        </ul>
       </div>
     </section>
   );
