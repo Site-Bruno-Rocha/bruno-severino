@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
-import { Menu, X, Mail, MessageCircle, ChevronDown } from "lucide-react";
+import { Menu, X, Mail, MessageCircle, ChevronDown, Linkedin } from "lucide-react";
 import CTAButton from "./CTAButton";
-import { EMAIL_PLACEHOLDER, WHATSAPP_URL, CRP, INSTAGRAM_URL } from "@/config";
+import { EMAIL_PLACEHOLDER, WHATSAPP_URL, CRP, INSTAGRAM_URL, LINKEDIN_URL } from "@/config";
 
 const InstagramIcon = ({ size = 12 }: { size?: number }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -176,6 +176,10 @@ const Header = () => {
               <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 hover:text-foreground transition-colors">
                 <InstagramIcon size={12} />
                 <span className="hidden sm:inline">Instagram</span>
+              </a>
+              <a href={LINKEDIN_URL} target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 hover:text-foreground transition-colors">
+                <Linkedin size={12} />
+                <span className="hidden sm:inline">LinkedIn</span>
               </a>
               <a href={`mailto:${EMAIL_PLACEHOLDER}`} className="flex items-center gap-1.5 hover:text-foreground transition-colors">
                 <Mail size={12} />

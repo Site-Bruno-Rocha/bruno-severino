@@ -29,5 +29,8 @@ export const CRP = "06/171992";
 export const INSTAGRAM_HANDLE = "@brunorocha.psi";
 export const INSTAGRAM_URL = "https://instagram.com/brunorocha.psi";
 
+// LinkedIn
+export const LINKEDIN_URL = "https://www.linkedin.com/in/bruno-severino-rocha-04a935148/";
+
 // Vídeo de apresentação (deixar vazio até ter URL)
 export const VIDEO_URL = "";

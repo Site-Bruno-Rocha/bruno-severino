@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
-import { CRP, EMAIL_PLACEHOLDER, INSTAGRAM_URL, INSTAGRAM_HANDLE, WHATSAPP_URL } from "@/config";
+import { Linkedin } from "lucide-react";
+import { CRP, EMAIL_PLACEHOLDER, INSTAGRAM_URL, INSTAGRAM_HANDLE, LINKEDIN_URL, WHATSAPP_URL } from "@/config";
 
 const InstagramIcon = ({ size = 14 }: { size?: number }) => (
   <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -23,7 +24,7 @@ const Footer = () => {
         />
 
         {/* Contatos */}
-        <div className="flex flex-col sm:flex-row items-center gap-3 sm:gap-5 text-sm text-muted-foreground">
+        <div className="flex flex-col sm:flex-row sm:flex-wrap sm:justify-center items-center gap-3 sm:gap-5 text-sm text-muted-foreground">
           <a
             href={WHATSAPP_URL}
             target="_blank"
@@ -48,6 +49,16 @@ const Footer = () => {
           >
             <InstagramIcon size={14} />
             {INSTAGRAM_HANDLE}
+          </a>
+          <span className="hidden sm:inline text-border">·</span>
+          <a
+            href={LINKEDIN_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1.5 hover:text-foreground transition-colors"
+          >
+            <Linkedin size={14} />
+            LinkedIn
           </a>
         </div>
 

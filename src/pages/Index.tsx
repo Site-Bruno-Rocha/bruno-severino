@@ -8,13 +8,13 @@ import WhatsAppButton from "@/components/WhatsAppButton";
 import BlogCard from "@/components/BlogCard";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Skeleton } from "@/components/ui/skeleton";
-import { EMAIL_PLACEHOLDER, WHATSAPP_URL, CRP, INSTAGRAM_URL, INSTAGRAM_HANDLE } from "@/config";
+import { EMAIL_PLACEHOLDER, WHATSAPP_URL, CRP, INSTAGRAM_URL, INSTAGRAM_HANDLE, LINKEDIN_URL } from "@/config";
 import { fetchPublishedPosts, type DbPost } from "@/hooks/usePosts";
 import { supabase } from "@/integrations/supabase/client";
 import { useScrollReveal, useStaggerReveal } from "@/hooks/useScrollReveal";
 
 import {
-  Clock, Home, MapPin, Monitor, ShieldCheck, Mail, MessageCircle,
+  Clock, Home, MapPin, Monitor, ShieldCheck, Mail, MessageCircle, Linkedin,
   Users, BookOpen, Brain, Briefcase, Scale, ClipboardCheck, Stethoscope, HeartHandshake,
 } from "lucide-react";
 
@@ -430,6 +430,10 @@ const ContatoSection = () => {
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-primary shrink-0"><rect width="20" height="20" x="2" y="2" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" x2="17.51" y1="6.5" y2="6.5"/></svg>
                 {INSTAGRAM_HANDLE}
               </a>
+              <a href={LINKEDIN_URL} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-sm text-muted-foreground hover:text-foreground transition-colors">
+                <Linkedin size={16} className="text-primary shrink-0" />
+                LinkedIn
+              </a>
               <div className="flex items-center gap-3 text-sm text-muted-foreground">
                 <Clock size={16} className="text-primary shrink-0" />
                 Segunda a sábado · Somente com hora marcada
@@ -506,9 +510,13 @@ const ContatoSection = () => {
 
               <WhatsAppButton variant="primary" size="md" label="Falar no WhatsApp" className="w-full justify-center" />
 
-              <div className="mt-6 pt-6 border-t border-border/50 flex items-center justify-center gap-5 text-xs text-muted-foreground">
+              <div className="mt-6 pt-6 border-t border-border/50 flex flex-wrap items-center justify-center gap-5 text-xs text-muted-foreground">
                 <a href={INSTAGRAM_URL} target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">
                   Instagram
+                </a>
+                <span className="text-border">·</span>
+                <a href={LINKEDIN_URL} target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">
+                  LinkedIn
                 </a>
                 <span className="text-border">·</span>
                 <a href={`mailto:${EMAIL_PLACEHOLDER}`} className="hover:text-foreground transition-colors">
